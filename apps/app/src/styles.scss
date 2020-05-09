@@ -1,1 +1,64 @@
-/* You can add global styles to this file, and also import other style files */
+// Bootstrap
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+// Override bootstrap variables (call before grid/utilities imports)
+@import "styles/variables";
+
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+
+// Material
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+// Application
+@import "styles/reboot";
+@import "styles/utilities";
+
+$toolbarHeight: 64px;
+
+/* =========================================================================
+ * GENERAL
+ * ========================================================================= */
+body {
+  width: 100%;
+  height: 100vh;
+}
+
+/* =========================================================================
+ * BOOTSTRAP
+ * ========================================================================= */
+.container.full-height {
+  height: calc(100vh - #{$toolbarHeight}); // 64px for toolbar
+
+  & > .row {
+    height: 100%;
+
+    & > *[class^=col-],
+    & > .col {
+      display: inline-grid;
+    }
+  }
+}
+
+/* =========================================================================
+ * MATERIAL
+ * ========================================================================= */
+.mat-icon + * {
+  margin-left: .25em;
+}
+
+.mat-toolbar + .mat-progress-bar {
+  margin-top: -4px;
+}
+
+/* =========================================================================
+ * BOOTSTRAP + MATERIAL
+ * ========================================================================= */
+.container {
+  .mat-card {
+    margin-top: 1em;
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "Calculateur de rendement minier",
+    "action": {
+      "close": "Fermer",
+      "validate": "Valider"
+    }
+  },
+  "welcome": {
+    "title": "Bienvenue !",
+    "content": "Si vous venez pour calcular/estimer votre revient de minage, vous êtes au bon endroit.",
+    "contribute": {
+      "title": "Contribution",
+      "content": [
+        "Merci à {{tankinator}} qui a fourni le tableur dont est inspiré ce site",
+        "et à {{trff}} qui a fourni la 1ère version."
+      ],
+      "tankinatorSheets": "Tableurs - Google Drive",
+      "trffSpotlight": "Citizen spotlight - RSI"
+    },
+    "player": {
+      "title": "Création d'un joueur",
+      "name": {
+        "label": "Ton Nom",
+        "placeholder": "Entre ton nom",
+        "hint": "Utilise ton handle IG de préférence"
+      },
+      "room": {
+        "create": "Créer une salle",
+        "join": "Rejoindre une salle"
+      }
+    },
+    "joinRoom": {
+      "title": "Rejoindre une salle",
+      "id": {
+        "label": "Identifiant de la salle",
+        "placeholder": "Entre l'iD de la salle",
+        "hint": "Il faut le demander à celui qui a créé la salle"
+      }
+    }
+  },
+  "room": {
+    "lobby": {
+      "title": "Lobby",
+      "queue": {
+        "title": "Queue"
+      },
+      "team": {
+        "title": "Equipe #{{index}}",
+        "add": "Ajouter une équipe"
+      }
+    }
+  }
+}

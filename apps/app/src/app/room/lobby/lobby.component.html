@@ -1,0 +1,30 @@
+<sct-myc-menubar [title]="'room.lobby.title' | translate"></sct-myc-menubar>
+<div class="container full-height">
+  <div class="row">
+    <div class="col-sm-4">
+      <mat-card class="mh-100">
+        <mat-card-header>
+          <mat-icon mat-card-avatar [matBadge]="(room.queue?.length || 0).toString()">group</mat-icon>
+          <mat-card-title>{{ 'room.lobby.queue.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let player of room.players">{{ player }}</mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-8">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card class="card-add-group">
+            <mat-card-content class="flex-center">
+              {{ 'room.lobby.team.add' | translate }}
+              <mat-icon>group_add</mat-icon>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

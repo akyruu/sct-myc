@@ -1,0 +1,13 @@
+<button mat-icon-button [matMenuTriggerFor]="themeMenu">
+  <mat-icon>format_color_fill</mat-icon>
+</button>
+<mat-menu #themeMenu>
+  <button mat-menu-item *ngFor="let theme of themes" (click)="doChangeTheme(theme)">
+    <ng-container [ngSwitch]="theme.id === currentTheme.id">
+      <mat-icon *ngSwitchCase="true" color="primary">radio_button_checked</mat-icon>
+      <mat-icon *ngSwitchDefault>radio_button_unchecked</mat-icon>
+    </ng-container>
+    <span>{{ theme.name }}</span>
+    <mat-icon svgIcon="theme" [class]="'theme-icon ' + theme.id + '-theme'"></mat-icon>
+  </button>
+</mat-menu>

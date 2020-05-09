@@ -1,0 +1,14 @@
+@import "node_modules/@angular/material/theming";
+
+@import "apps/app/src/styles/themes/theming-loading";
+
+@include mat-core();
+
+@mixin app-theme($theme, $bgImageUrl) {
+  @include angular-material-theme($theme);
+  @include sct-myc-loading-theme($theme);
+
+  body {
+    background: $bgImageUrl center/cover;
+  }
+}

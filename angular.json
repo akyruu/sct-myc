@@ -26,6 +26,7 @@
               "apps/app/src/assets"
             ],
             "styles": [
+              "apps/app/src/styles-loading.scss",
               "apps/app/src/styles.scss"
             ],
             "scripts": []

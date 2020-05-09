@@ -1,1 +1,3 @@
-export * from './lib/api-interfaces';
+export * from './lib/room.interface';
+export * from './lib/room-options.interface';
+export * from './lib/team.interface';

@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" [class.position-fixed]="fixed">
+  <ng-container *ngIf="!iconRef; else: iconRef">
+    <ng-container *ngIf="icon" [ngSwitch]="!!icon.svg">
+      <mat-icon *ngSwitchCase="true" [svgIcon]="icon.svg"></mat-icon>
+      <mat-icon *ngSwitchDefault>{{ icon }}</mat-icon>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="!titleRef; else: titleRef">
+    <span>{{ title || ('app.title' | translate) }}</span>
+  </ng-container>
+  <div class="flex-spacer"></div>
+  <sct-myc-theme-picker></sct-myc-theme-picker>
+</mat-toolbar>
+<mat-progress-bar color="accent" mode="indeterminate" *ngIf="appLoading"></mat-progress-bar>
+<mat-progress-bar color="accent" mode="query" *ngIf="navLoading && !appLoading"></mat-progress-bar>

@@ -1,15 +1,31 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@sct-myc/api-interfaces';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
+import { SocketService } from './core/services';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'sct-myc-root',
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
+export class AppComponent implements OnInit, OnDestroy {
+  /* FIELDS ================================================================ */
+  private _subscription: Subscription;
 
-  constructor(private http: HttpClient) {
+  /* CONSTRUCTOR =========================================================== */
+  constructor(
+    private _matSnackBar: MatSnackBar,
+    private _socketService: SocketService
+  ) {}
+
+  /* METHODS =============================================================== */
+  ngOnInit(): void {
+    this._subscription = this._socketService.exceptionThrowed.subscribe(error => {
+      console.log('error', error); // TODO
+      this._matSnackBar.open('TODO error');
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
   }
 }

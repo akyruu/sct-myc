@@ -1,7 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { Message } from '@sct-myc/api-interfaces';
-
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,7 +8,7 @@ export class AppController {
   }
 
   @Get('hello')
-  getData(): Message {
+  getData(): object {
     return this.appService.getData();
   }
 }

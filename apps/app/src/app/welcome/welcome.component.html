@@ -1,0 +1,47 @@
+<sct-myc-menubar></sct-myc-menubar>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>mood</mat-icon>
+          <mat-card-title>{{ 'welcome.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>{{ 'welcome.content' | translate }}</mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>mood</mat-icon>
+          <mat-card-title>{{ 'welcome.contribute.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <sct-myc-translate key="welcome.contribute.content">
+            <ng-template #tankinator>
+              <a target="_blank" href="https://robertsspaceindustries.com/citizens/TankinatorFR">Tankinator</a>
+            </ng-template>
+            <ng-template #trff>
+              <a target="_blank" href="https://robertsspaceindustries.com/citizens/TRFF">TRFF</a>
+            </ng-template>
+          </sct-myc-translate>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="row">
+            <a mat-flat-button class="col" target="_blank" [title]="'welcome.contribute.tankinatorSheets' | translate"
+               href="https://drive.google.com/drive/folders/1kpia1l0SxhW1L6hA4tto-Dz78exLpmT8">
+              <mat-icon>description</mat-icon>
+              Tankinator
+            </a>
+            <a mat-flat-button class="col" target="_blank" [title]="'welcome.contribute.trffSpotlight' | translate"
+               href="https://robertsspaceindustries.com/community/citizen-spotlight/16649-Mining-Yield-Calculator">
+              <mat-icon>description</mat-icon>
+              TRFF
+            </a>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <sct-myc-player-card></sct-myc-player-card>
+    </div>
+  </div>
+</div>

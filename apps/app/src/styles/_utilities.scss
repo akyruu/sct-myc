@@ -1,0 +1,11 @@
+.flex-spacer {
+  -webkit-box-flex: 1 !important;
+  flex-grow: 1 !important;
+}
+
+.flex-center {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}

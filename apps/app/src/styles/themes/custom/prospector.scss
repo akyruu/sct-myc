@@ -1,0 +1,9 @@
+@import "../theming";
+
+$prospector-primary: mat-palette($mat-blue-gray);
+$prospector-accent: mat-palette($mat-orange, A200, A100, A400);
+$prospector-warn: mat-palette($mat-red);
+$prospector-theme: mat-light-theme($prospector-primary, $prospector-accent, $prospector-warn);
+$prospector-image: url(../../../assets/images/bg-prospector.jpg);
+
+@include app-theme($prospector-theme, $prospector-image);

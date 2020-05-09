@@ -1,0 +1,36 @@
+button:focus {
+  outline: none;
+}
+
+/* =========================================================================
+ * MATERIAL
+ * ========================================================================= */
+.mat-icon > svg {
+  vertical-align: inherit;
+}
+
+.mat-menu-item .mat-icon svg {
+  vertical-align: middle !important;
+}
+
+/* =========================================================================
+ * MATERIAL + BOOTSTRAP
+ * ========================================================================= */
+.mat-card-actions {
+  .row {
+    display: flex;
+    margin: 0;
+
+    &:first-child {
+      margin-top: -16px;
+    }
+
+    .mat-button-base {
+      margin: 8px 0 0 0;
+
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+    }
+  }
+}

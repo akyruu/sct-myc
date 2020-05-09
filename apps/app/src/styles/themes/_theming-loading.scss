@@ -1,0 +1,17 @@
+@import 'node_modules/@angular/material/theming';
+
+@mixin sct-myc-loading-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+
+  .sct-myc-loading {
+    .logo {
+      background-color: mat-color($foreground, text);
+    }
+
+    .spinner .path {
+      stroke: mat-color($accent);
+    }
+  }
+}

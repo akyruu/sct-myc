@@ -1,0 +1,31 @@
+@import "~@angular/material/theming";
+
+@mixin sct-myc-theme-picker-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $background: map-get($theme, background);
+
+  ::ng-deep {
+    .theme-icon-background {
+      fill: map-get($background, background) !important;
+    }
+
+    .theme-icon-button {
+      fill: mat-color($accent);
+    }
+
+    .theme-icon-toolbar {
+      fill: mat-color($primary);
+    }
+  }
+}
+
+.argo-mole-theme {
+  @import "../../../styles/themes/custom/argo-mole";
+  @include sct-myc-theme-picker-theme($argo-mole-theme);
+}
+
+.prospector-theme {
+  @import "../../../styles/themes/custom/prospector";
+  @include sct-myc-theme-picker-theme($prospector-theme);
+}
