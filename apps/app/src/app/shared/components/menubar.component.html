@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" [class.position-fixed]="fixed">
+<mat-toolbar color="primary" [class.sticky-top]="sticky">
   <ng-container *ngIf="!iconRef; else: iconRef">
     <ng-container *ngIf="icon" [ngSwitch]="!!icon.svg">
       <mat-icon *ngSwitchCase="true" [svgIcon]="icon.svg"></mat-icon>
@@ -10,6 +10,7 @@
   </ng-container>
   <div class="flex-spacer"></div>
   <sct-myc-theme-picker></sct-myc-theme-picker>
+  <ng-container *ngIf="!actionsRef; else: actionsRef"></ng-container>
 </mat-toolbar>
 <mat-progress-bar color="accent" mode="indeterminate" *ngIf="appLoading"></mat-progress-bar>
 <mat-progress-bar color="accent" mode="query" *ngIf="navLoading && !appLoading"></mat-progress-bar>

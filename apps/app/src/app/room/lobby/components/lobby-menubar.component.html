@@ -1,0 +1,17 @@
+<sct-myc-menubar [title]="'room.lobby.title' | translate">
+  <ng-template #actions>
+    <button mat-icon-button [matMenuTriggerFor]="shareMenu" [matTooltip]="'room.lobby.menubar.share.title' | translate">
+      <mat-icon>share</mat-icon>
+    </button>
+    <mat-menu #shareMenu>
+      <button mat-menu-item (click)="doCopyRoomId()">
+        <mat-icon>file_copy</mat-icon>
+        {{ 'room.lobby.menubar.share.id' | translate }}
+      </button>
+      <button mat-menu-item (click)="doCopyRoomUrl()">
+        <mat-icon>file_copy</mat-icon>
+        {{ 'room.lobby.menubar.share.url' | translate }}
+      </button>
+    </mat-menu>
+  </ng-template>
+</sct-myc-menubar>

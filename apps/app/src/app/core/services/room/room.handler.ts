@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Team} from '@sct-myc/api-interfaces';
-import {Subscription} from 'rxjs';
-import {AppContext} from '../../contexts';
+import { Injectable } from '@angular/core';
+import { Player, Team } from '@sct-myc/api-interfaces';
+import { Subscription } from 'rxjs';
 
-import {SocketService} from '../socket.service';
+import { AppContext } from '../../contexts';
+import { SocketService } from '../socket.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class RoomHandler {
   /* FIELDS ================================================================ */
   private readonly _subscriptions: Subscription[] = [];
@@ -31,14 +31,14 @@ export class RoomHandler {
    * @param players List of players.
    * @private
    */
-  private _players(players: string[]): void {
+  private _players(players: Player[]): void {
     this._appContext.room.players = players;
   }
 
   /**
    * Event when player queue list change.
    *
-   * @param queue List of players in queue.
+   * @param queue List of player ids in queue.
    * @private
    */
   private _queue(queue: string[]): void {

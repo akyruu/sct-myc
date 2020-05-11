@@ -6,6 +6,29 @@
       "validate": "Valider"
     }
   },
+  "menubar": {
+    "theme": "Choisir un thème"
+  },
+  "room": {
+    "lobby": {
+      "title": "Lobby",
+      "menubar": {
+        "share": {
+          "title": "Partager la partie",
+          "id": "Partager l'identifiant",
+          "url": "Partager le lien"
+        }
+      },
+      "queue": {
+        "title": "Joueurs",
+        "description": "Non affectés à une équipe"
+      },
+      "team": {
+        "title": "Equipe #{{id}}",
+        "add": "Ajouter une équipe"
+      }
+    }
+  },
   "welcome": {
     "title": "Bienvenue !",
     "content": "Si vous venez pour calcular/estimer votre revient de minage, vous êtes au bon endroit.",
@@ -36,18 +59,6 @@
         "label": "Identifiant de la salle",
         "placeholder": "Entre l'iD de la salle",
         "hint": "Il faut le demander à celui qui a créé la salle"
-      }
-    }
-  },
-  "room": {
-    "lobby": {
-      "title": "Lobby",
-      "queue": {
-        "title": "Queue"
-      },
-      "team": {
-        "title": "Equipe #{{id}}",
-        "add": "Ajouter une équipe"
       }
     }
   }

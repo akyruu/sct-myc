@@ -29,6 +29,7 @@ export class RoomManager {
 
     const room = await this._roomService.createRoom(options);
     this._appContext.room = room;
+    this._appContext.myPlayer = room.players.find(player => player.name === options.playerName);
     this._roomHandler.bindEvents();
 
     this._router.navigate(['/room/lobby']).then();
@@ -45,6 +46,7 @@ export class RoomManager {
 
     const room = await this._roomService.joinRoom(roomId, { playerName: playerName });
     this._appContext.room = room;
+    this._appContext.myPlayer = room.players.find(player => player.name === playerName);
     this._roomHandler.bindEvents();
 
     if (room.started) {

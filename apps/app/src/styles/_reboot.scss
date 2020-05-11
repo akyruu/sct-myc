@@ -34,3 +34,7 @@ button:focus {
     }
   }
 }
+
+.mat-toolbar.sticky-top {
+  z-index: 920; // default value: 1020 (must be under cdkOverlay value: 1000)
+}

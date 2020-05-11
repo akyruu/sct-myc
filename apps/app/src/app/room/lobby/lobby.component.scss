@@ -1,7 +1,21 @@
-.card-group {
-  height: 200px;
+.card-queue {
+  height: 100%;
 }
 
-.card-add-group {
-  border: dotted 3px;
+.card-group, .card-queue {
+  min-height: 200px;
+
+  .mat-card-content {
+    overflow: hidden;
+  }
+
+  .mat-chip {
+    width: 100%;
+  }
 }
+
+.button-add-group {
+  border: dotted 3px;
+  width: 100%;
+}
+

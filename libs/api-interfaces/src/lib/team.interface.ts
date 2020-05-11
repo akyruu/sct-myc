@@ -1,5 +1,5 @@
 export interface Team {
   id: number;
-  leader?: string;
-  players: string[];
+  leaderId?: string;
+  playerIds: string[];
 }

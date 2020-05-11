@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Room } from '@sct-myc/api-interfaces';
+import { Player, Room } from '@sct-myc/api-interfaces';
 import { BehaviorSubject } from 'rxjs';
 
 import { StringLocalStorageItem } from '../models/local-storage-item';
@@ -8,7 +8,9 @@ import { StringLocalStorageItem } from '../models/local-storage-item';
 export class AppContext {
   /* FIELDS ================================================================ */
   readonly playerName = new StringLocalStorageItem('playerName');
-  room: Room;
-
   readonly loading = new BehaviorSubject<boolean>(false);
+
+  /* Room ------------------------------------------------------------------ */
+  room: Room;
+  myPlayer: Player;
 }

@@ -13,10 +13,11 @@ export class MenubarComponent implements OnInit, OnDestroy {
   /* FIELDS ================================================================ */
   @Input() icon: Icon = { svg: 'pickaxe' };
   @Input() title: string;
-  @Input() fixed = false;
+  @Input() sticky = true;
 
   @ContentChild('icon') iconRef: TemplateRef<any>;
   @ContentChild('title') titleRef: TemplateRef<any>;
+  @ContentChild('actions') actionsRef: TemplateRef<any>;
 
   appLoading = false;
   navLoading = false;

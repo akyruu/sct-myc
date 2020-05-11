@@ -4,9 +4,6 @@
 /* Theme for the ripple elements.*/
 /* stylelint-disable material/no-prefixes */
 /* stylelint-enable */
-/* Theme for the ripple elements.*/
-/* stylelint-disable material/no-prefixes */
-/* stylelint-enable */
 .mat-badge-content {
   font-weight: 600;
   font-size: 12px;
@@ -1948,14 +1945,16 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .sct-myc-loading .spinner .path {
   stroke: #ffab40; }
 
-.theme-icon-background {
-  fill: #fafafa !important; }
-
-.theme-icon-button {
-  fill: #ffab40; }
-
-.theme-icon-toolbar {
-  fill: #607d8b; }
-
 body {
-  background: url(../../../assets/images/bg-prospector.jpg) center/cover; }
+  background: url(../../../assets/images/bg-prospector.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+
+.card-button {
+  background: #fafafa; }
+  .card-button:hover {
+    background: rgba(0, 0, 0, 0.04); }
+  .card-button:active {
+    background: rgba(0, 0, 0, 0.12); }

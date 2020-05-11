@@ -1,45 +1,57 @@
-<sct-myc-menubar [title]="'room.lobby.title' | translate"></sct-myc-menubar>
-<div class="container">
+<sct-myc-lobby-menubar></sct-myc-lobby-menubar>
+<div class="main container">
   <div class="row">
     <div class="col-sm-4">
-      <mat-card>
+      <mat-card class="card-queue mat-card-fixed-height">
         <mat-card-header>
-          <mat-icon mat-card-avatar [matBadge]="(room.queue?.length || 0).toString()">person</mat-icon>
+          <mat-icon mat-card-avatar
+                    [matBadge]="queue.length.toString()" matBadgeColor="accent" matBadgePosition="above before">
+            person
+          </mat-icon>
           <mat-card-title>{{ 'room.lobby.queue.title' | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ 'room.lobby.queue.description' | translate }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let player of room.players">{{ player }}</mat-list-item>
-          </mat-list>
+          <ng-container *ngTemplateOutlet="playerList; context: {$implicit: queue}"></ng-container>
         </mat-card-content>
       </mat-card>
     </div>
     <div class="col-sm-8">
       <div class="row">
         <div class="col-sm-6" *ngFor="let team of room.teams">
-          <mat-card class="card-group">
+          <mat-card class="card-group mat-card-fixed-height">
             <mat-card-header>
-              <mat-icon mat-card-avatar [matBadge]="(team.players.length || 0).toString()">group</mat-icon>
+              <mat-icon mat-card-avatar
+                        [matBadge]="team.playerIds.length.toString()"
+                        [matBadgeColor]="team.playerIds.length === 0 ? 'warn' : 'accent'"
+                        matBadgePosition="above before">
+                group
+              </mat-icon>
               <mat-card-title>{{ 'room.lobby.team.title' | translate:team }}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <mat-list>
-                <mat-list-item *ngFor="let player of team.players">{{ player }}</mat-list-item>
-              </mat-list>
+              <ng-container *ngTemplateOutlet="playerList; context: {$implicit: getTeamPlayers(team)}"></ng-container>
             </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button (click)="doRemoveTeam(team)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-actions>
           </mat-card>
         </div>
-        <div class="col-sm-6">
-          <mat-card class="card-group card-add-group">
-            <mat-card-content class="flex-center h-100">
-              <button mat-button (click)="doAddTeam()">
-                {{ 'room.lobby.team.add' | translate }}
-                <mat-icon>group_add</mat-icon>
-              </button>
-            </mat-card-content>
-          </mat-card>
+        <div class="col-sm-6" *ngIf="myPlayer.roomLeader">
+          <button mat-flat-button class="card-group button-add-group" (click)="doAddTeam()">
+            <div>{{ 'room.lobby.team.add' | translate }}</div>
+            <mat-icon>group_add</mat-icon>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #playerList let-players>
+  <mat-chip-list *ngFor="let player of players" cdkDropList>
+    <mat-chip>{{ player.name }}</mat-chip>
+  </mat-chip-list>
+</ng-template>

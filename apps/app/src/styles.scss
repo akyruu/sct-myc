@@ -17,7 +17,10 @@
 @import "styles/reboot";
 @import "styles/utilities";
 
-$toolbarHeight: 64px;
+$card-avatar-size: 40px;
+$gutter-width: 1em;
+$gutter-height: 1em;
+$toolbar-height: 64px;
 
 /* =========================================================================
  * GENERAL
@@ -27,11 +30,33 @@ body {
   height: 100vh;
 }
 
+.main {
+  padding-top: $gutter-height;
+  padding-bottom: $gutter-height;
+
+  @include media-breakpoint-down(sm) {
+    padding-left: $gutter-width;
+    padding-right: $gutter-width;
+  }
+
+  .row {
+    margin-top: -1 * $gutter-height;
+
+    *[class^=col-], .col {
+      margin-top: $gutter-height;
+
+      & > .mat-card + .mat-card {
+        margin-top: $gutter-height;
+      }
+    }
+  }
+}
+
 /* =========================================================================
  * BOOTSTRAP
  * ========================================================================= */
 .container.full-height {
-  height: calc(100vh - #{$toolbarHeight}); // 64px for toolbar
+  height: calc(100vh - #{$toolbar-height}); // 64px for toolbar, TODO 56px if width <= 599
 
   & > .row {
     height: 100%;
@@ -46,8 +71,40 @@ body {
 /* =========================================================================
  * MATERIAL
  * ========================================================================= */
-.mat-icon + * {
-  margin-left: .25em;
+.mat-card-fixed-height {
+  display: flex !important;
+  flex-direction: column;
+
+  .mat-card-header {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0; /** <-- Add this **/
+  }
+
+  .mat-card-content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .mat-card-actions {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.mat-icon {
+  & + * {
+    margin-left: .25em;
+  }
+
+  &.mat-card-avatar {
+    font-size: $card-avatar-size;
+
+    & + .mat-card-header-text {
+      margin-left: 1.25em;
+    }
+  }
+
 }
 
 .mat-toolbar + .mat-progress-bar {
@@ -57,8 +114,4 @@ body {
 /* =========================================================================
  * BOOTSTRAP + MATERIAL
  * ========================================================================= */
-.container {
-  .mat-card {
-    margin-top: 1em;
-  }
-}
+// Nothing here

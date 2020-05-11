@@ -7,6 +7,7 @@
     "nx": "nx",
     "start-app": "ng serve",
     "start-api": "ng serve api",
+    "prebuild": "tools/build-themes.sh",
     "build": "ng build",
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",

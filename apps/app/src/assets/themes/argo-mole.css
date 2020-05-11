@@ -4,9 +4,6 @@
 /* Theme for the ripple elements.*/
 /* stylelint-disable material/no-prefixes */
 /* stylelint-enable */
-/* Theme for the ripple elements.*/
-/* stylelint-disable material/no-prefixes */
-/* stylelint-enable */
 .mat-badge-content {
   font-weight: 600;
   font-size: 12px;
@@ -1952,14 +1949,16 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .sct-myc-loading .spinner .path {
   stroke: #448aff; }
 
-.theme-icon-background {
-  fill: #303030 !important; }
-
-.theme-icon-button {
-  fill: #448aff; }
-
-.theme-icon-toolbar {
-  fill: #ff5722; }
-
 body {
-  background: url(../../../assets/images/bg-argo-mole.jpg) center/cover; }
+  background: url(../../../assets/images/bg-argo-mole.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+
+.card-button {
+  background: #303030; }
+  .card-button:hover {
+    background: rgba(255, 255, 255, 0.04); }
+  .card-button:active {
+    background: rgba(255, 255, 255, 0.12); }
