@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Room } from '@sct-myc/api-interfaces';
+import {Component, OnInit} from '@angular/core';
+import {Room} from '@sct-myc/api-interfaces';
 
-import { AppContext } from '../../core';
+import {AppContext, RoomService} from '../../core';
 
 @Component({
   selector: 'sct-myc-lobby',
@@ -13,10 +13,18 @@ export class LobbyComponent implements OnInit {
   room: Room;
 
   /* CONSTRUCTOR =========================================================== */
-  constructor(private _appContext: AppContext) {}
+  constructor(
+    private _appContext: AppContext,
+    private _roomService: RoomService
+  ) {}
 
   /* METHODS =============================================================== */
   ngOnInit(): void {
     this.room = this._appContext.room;
+  }
+
+  /* Events ---------------------------------------------------------------- */
+  doAddTeam(): void {
+    this._roomService.addTeam().then();
   }
 }

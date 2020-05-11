@@ -1,10 +1,10 @@
 <sct-myc-menubar [title]="'room.lobby.title' | translate"></sct-myc-menubar>
-<div class="container full-height">
+<div class="container">
   <div class="row">
     <div class="col-sm-4">
-      <mat-card class="mh-100">
+      <mat-card>
         <mat-card-header>
-          <mat-icon mat-card-avatar [matBadge]="(room.queue?.length || 0).toString()">group</mat-icon>
+          <mat-icon mat-card-avatar [matBadge]="(room.queue?.length || 0).toString()">person</mat-icon>
           <mat-card-title>{{ 'room.lobby.queue.title' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
@@ -16,11 +16,26 @@
     </div>
     <div class="col-sm-8">
       <div class="row">
+        <div class="col-sm-6" *ngFor="let team of room.teams">
+          <mat-card class="card-group">
+            <mat-card-header>
+              <mat-icon mat-card-avatar [matBadge]="(team.players.length || 0).toString()">group</mat-icon>
+              <mat-card-title>{{ 'room.lobby.team.title' | translate:team }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-list>
+                <mat-list-item *ngFor="let player of team.players">{{ player }}</mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        </div>
         <div class="col-sm-6">
-          <mat-card class="card-add-group">
-            <mat-card-content class="flex-center">
-              {{ 'room.lobby.team.add' | translate }}
-              <mat-icon>group_add</mat-icon>
+          <mat-card class="card-group card-add-group">
+            <mat-card-content class="flex-center h-100">
+              <button mat-button (click)="doAddTeam()">
+                {{ 'room.lobby.team.add' | translate }}
+                <mat-icon>group_add</mat-icon>
+              </button>
             </mat-card-content>
           </mat-card>
         </div>

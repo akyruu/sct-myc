@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Room, RoomOptions } from '@sct-myc/api-interfaces';
+import {Injectable} from '@angular/core';
+import {Room, RoomOptions} from '@sct-myc/api-interfaces';
 
-import { SocketService } from '../socket.service';
+import {SocketService} from '../socket.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RoomService {
   /* CONSTRUCTOR =========================================================== */
   constructor(private _socketService: SocketService) {}
@@ -25,7 +25,7 @@ export class RoomService {
    * @param options Room options.
    */
   async joinRoom(roomId: string, options: RoomOptions): Promise<Room> {
-    return this._socketService.emitAndWait('room:join', { roomId: roomId, options: options });
+    return this._socketService.emitAndWait('room:join', {roomId: roomId, options: options});
   }
 
   /**
@@ -33,5 +33,20 @@ export class RoomService {
    */
   async leaveRoom(): Promise<void> {
     return this._socketService.emitAndWait('room:leave');
+  }
+
+  /* Team ------------------------------------------------------------------ */
+  /**
+   * Create a new team in current room.
+   */
+  async addTeam(): Promise<void> {
+    return this._socketService.emitAndWait('room:team:add');
+  }
+
+  /**
+   * Remove a team in current room.
+   */
+  async removeTeam(id: number): Promise<void> {
+    return this._socketService.emitAndWait('room:team:remove', id);
   }
 }

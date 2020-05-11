@@ -46,7 +46,7 @@
         "title": "Queue"
       },
       "team": {
-        "title": "Equipe #{{index}}",
+        "title": "Equipe #{{id}}",
         "add": "Ajouter une équipe"
       }
     }

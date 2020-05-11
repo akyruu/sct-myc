@@ -1,9 +1,9 @@
-import { ConnectedSocket, MessageBody, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { Room, RoomOptions } from '@sct-myc/api-interfaces';
-import { Socket } from 'socket.io';
-import { TransWsException } from '../commons';
-
-import { RoomService } from './room.service';
+import {ConnectedSocket, MessageBody, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway} from '@nestjs/websockets';
+import {Room, RoomOptions} from '@sct-myc/api-interfaces';
+import {Socket} from 'socket.io';
+import {TransWsException} from '../commons';
+import {RoomManager} from './room.manager';
+import {RoomService} from './room.service';
 
 @WebSocketGateway()
 export class RoomGateway implements OnGatewayDisconnect {
@@ -11,7 +11,10 @@ export class RoomGateway implements OnGatewayDisconnect {
   private readonly _sessions = new Map<string, { playerName: string, roomId: string }>();
 
   /* CONSTRUCTOR =========================================================== */
-  constructor(private _roomService: RoomService) {}
+  constructor(
+    private _roomManager: RoomManager,
+    private _roomService: RoomService
+  ) {}
 
   /* METHODS =============================================================== */
   handleDisconnect(client: Socket): void {
@@ -24,9 +27,9 @@ export class RoomGateway implements OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() options: RoomOptions
   ): Room {
-    const room = this._roomService.create(options.playerName);
+    const room = this._roomManager.createRoom(options.playerName);
     client.join(room.id);
-    this._sessions.set(client.id, { playerName: options.playerName, roomId: room.id });
+    this._sessions.set(client.id, {playerName: options.playerName, roomId: room.id});
     return room;
   }
 
@@ -35,29 +38,26 @@ export class RoomGateway implements OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { roomId: string, options: RoomOptions }
   ): Room {
-    const roomId = data.roomId;
     const playerName = data.options.playerName;
+    const roomId = data.roomId;
 
-    const room = this._roomService.findById(roomId);
+    let room = this._roomService.read(roomId);
     if (!room) {
       throw new TransWsException(
         'Room <' + roomId + '> not found.',
         'roomNotFound',
-        { roomId: roomId }
+        {roomId: roomId}
       );
     } else if (room.players.includes(playerName)) {
       throw new TransWsException(
         'Player <' + playerName + '> already exists in room <' + roomId + '>.',
         'playerAlreadyExists',
-        { roomId: roomId, playerName: playerName }
+        {roomId: roomId, playerName: playerName}
       );
     }
-
+    room = this._roomManager.addPlayer(client, playerName, data.roomId);
     client.join(room.id);
-    this._sessions.set(client.id, { playerName: playerName, roomId: room.id });
-
-    this._roomService.addPlayer(playerName, roomId);
-    client.in(room.id).broadcast.emit('playerJoined', playerName);
+    this._sessions.set(client.id, {playerName: playerName, roomId: room.id});
 
     return room;
   }
@@ -67,19 +67,20 @@ export class RoomGateway implements OnGatewayDisconnect {
     this._leaveRoom(client);
   }
 
+  /* Team ------------------------------------------------------------------ */
+  @SubscribeMessage('room:team:add')
+  onAddTeam(@ConnectedSocket() client: Socket): void {
+    const roomId = this._sessions.get(client.id).roomId;
+    this._roomManager.addTeam(client, roomId);
+  }
+
   /* Tools ----------------------------------------------------------------- */
   private _leaveRoom(client: Socket): void {
     const session = this._sessions.get(client.id);
     if (session) {
-      const room = this._roomService.findById(session.roomId);
-      if (room) {
-        client.leave(session.roomId);
-        this._roomService.deletePlayer(session.playerName, session.roomId);
-        const players = this._roomService.findAllPlayers(session.roomId);
-        if (players.length === 0) {
-          this._roomService.deleteRoom(session.roomId);
-        }
-      }
+      client.leave(session.roomId);
+      this._roomManager.leaveRoom(client, session.playerName, session.roomId);
+      this._sessions.delete(client.id);
     }
   }
 }
