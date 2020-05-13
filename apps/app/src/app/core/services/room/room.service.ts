@@ -42,7 +42,7 @@ export class RoomService {
    * @param playerId Id of player to update.
    * @param teamId Affected team (or null for detach)
    */
-  setPlayerTeam(playerId: string, teamId?: number): Promise<void> {
+  playerSetTeam(playerId: string, teamId?: number): Promise<void> {
     return this._socketService.emitAndWait('room:player:setTeam', {playerId: playerId, teamId: teamId});
   }
 
@@ -52,6 +52,16 @@ export class RoomService {
    */
   addTeam(): Promise<void> {
     return this._socketService.emitAndWait('room:team:add');
+  }
+
+  /**
+   * Set team leader in current room.
+   *
+   * @param playerId
+   * @param teamId
+   */
+  teamSetLeader(playerId: string, teamId: number): Promise<void> {
+    return this._socketService.emitAndWait('room:team:leader', {playerId: playerId, teamId: teamId});
   }
 
   /**

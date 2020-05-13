@@ -1,4 +1,3 @@
-import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnInit} from '@angular/core';
 import {Player, Room, Team} from '@sct-myc/api-interfaces';
 import {Subscription} from 'rxjs';
@@ -18,7 +17,6 @@ interface DragDropData {
 export class LobbyComponent implements OnInit {
   /* FIELDS ================================================================ */
   myPlayer: Player;
-
   queue: DragDropData;
   teams: DragDropData[] = [];
 
@@ -33,8 +31,6 @@ export class LobbyComponent implements OnInit {
 
   /* METHODS =============================================================== */
   ngOnInit(): void {
-    this.myPlayer = this._appContext.myPlayer;
-
     this._room = this._appContext.room;
     this._refresh();
 
@@ -50,22 +46,26 @@ export class LobbyComponent implements OnInit {
     this._roomService.removeTeam(team.id).then();
   }
 
-  doMovePlayer(event: CdkDragDrop<DragDropData>): void {
-    if (event.previousContainer !== event.container) {
-      const currentData = event.container.data;
-      transferArrayItem(event.previousContainer.data.players, currentData.players, event.previousIndex, event.currentIndex);
-
-      const player: Player = event.item.data;
-      this._roomService.setPlayerTeam(player.id, currentData.team?.id).then();
-    }
-  }
-
   /* Tools ----------------------------------------------------------------- */
   private _refresh(): void {
-    this.queue = {players: this._room.players.filter(player => this._room.queue.includes(player.id))};
+    this.myPlayer = this._appContext.myPlayer;
+    this.queue = {
+      players: this._room.players
+        .filter(player => this._room.queue.includes(player.id))
+        .sort((p1, p2) => p1.name.localeCompare(p2.name))
+    };
     this.teams = this._room.teams.map(team => ({
       team: team,
-      players: this._room.players.filter(player => player.teamId === team.id)
+      players: this._room.players
+        .filter(player => player.teamId === team.id)
+        .sort((p1, p2) => {
+          if (p1.teamLeader) {
+            return -1;
+          } else if (p1.teamLeader) {
+            return 1;
+          }
+          return p1.name.localeCompare(p2.name);
+        })
     }));
   }
 }

@@ -10,6 +10,7 @@ import {RoomManager} from './room.manager';
 import {RoomService} from './room.service';
 import {SessionGuard} from './session.guard';
 import {SessionService} from './session.service';
+import {TeamManager} from './team.manager';
 
 @WebSocketGateway()
 export class RoomGateway implements OnGatewayDisconnect {
@@ -20,6 +21,7 @@ export class RoomGateway implements OnGatewayDisconnect {
     private _roomManager: RoomManager,
     private _roomService: RoomService,
     private _sessionService: SessionService,
+    private _teamManager: TeamManager
   ) {}
 
   /* METHODS =============================================================== */
@@ -92,6 +94,16 @@ export class RoomGateway implements OnGatewayDisconnect {
   onAddTeam(@ConnectedSocket() client: Socket): void {
     const roomId = this._sessionService.get(client).roomId;
     this._roomManager.addTeam(client, roomId);
+  }
+
+  @UseGuards(SessionGuard)
+  @SubscribeMessage('room:team:leader')
+  onTeamSetLeader(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { playerId: string, teamId?: number }
+  ): void {
+    const roomId = this._sessionService.get(client).roomId;
+    this._teamManager.setLeader(client, roomId, data.playerId, data.teamId);
   }
 
   @UseGuards(SessionGuard)

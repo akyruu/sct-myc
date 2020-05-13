@@ -21,9 +21,11 @@ export class RoomHandler {
   bindEvents(): void {
     this._subscriptions.push(
       this._socketService.onEvent('room:updated', this._roomUpdated.bind(this)),
+      this._socketService.onEvent('room:player:updated', this._playerUpdated.bind(this)),
       this._socketService.onEvent('room:players', this._players.bind(this)),
       this._socketService.onEvent('room:queue', this._queue.bind(this)),
-      this._socketService.onEvent('room:teams', this._teams.bind(this))
+      this._socketService.onEvent('room:team:updated', this._teamUpdated.bind(this)),
+      this._socketService.onEvent('room:teams', this._teams.bind(this)),
     );
   }
 
@@ -35,6 +37,17 @@ export class RoomHandler {
    */
   private _roomUpdated(room: Room): void {
     Object.assign(this._appContext.room, room);
+    this._onChanges();
+  }
+
+  /**
+   * Event when player updated.
+   *
+   * @param player Player updated.
+   * @private
+   */
+  private _playerUpdated(player: Player): void {
+    Object.assign(this._appContext.room.players.find(p => p.id === player.id), player);
     this._onChanges();
   }
 
@@ -60,6 +73,16 @@ export class RoomHandler {
     this._onChanges({name: 'queue', value: queue});
   }
 
+  /**
+   * Event when team updated.
+   *
+   * @param team Team updated.
+   * @private
+   */
+  private _teamUpdated(team: Team): void {
+    Object.assign(this._appContext.room.teams.find(t => t.id === team.id), team);
+    this._onChanges();
+  }
 
   /**
    * Event when team list change

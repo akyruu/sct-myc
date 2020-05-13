@@ -11,8 +11,12 @@ export class AppContext {
   readonly loading = new BehaviorSubject<boolean>(false);
 
   /* Room ------------------------------------------------------------------ */
-  myPlayer: Player;
+  myPlayerId: string;
   room: Room;
   readonly roomChanges = new EventEmitter<RoomUpdatedEvent>();
 
+  /* METHODS =============================================================== */
+  get myPlayer(): Player {
+    return this.room.players.find(player => player.id === this.myPlayerId);
+  }
 }

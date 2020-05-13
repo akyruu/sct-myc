@@ -9,6 +9,7 @@ import {RoomManager} from './room.manager';
 import {RoomService} from './room.service';
 import {SessionGuard} from './session.guard';
 import {SessionService} from './session.service';
+import {TeamManager} from './team.manager';
 
 @Module({
   controllers: [RoomController],
@@ -20,7 +21,8 @@ import {SessionService} from './session.service';
     RoomManager,
     RoomService,
     SessionGuard,
-    SessionService
+    SessionService,
+    TeamManager,
   ]
 })
 export class RoomModule {}

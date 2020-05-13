@@ -15,7 +15,7 @@
             <mat-card-subtitle>{{ 'room.lobby.queue.description' | translate }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <ng-container *ngTemplateOutlet="playerList; context: {$implicit: queue}"></ng-container>
+            <sct-myc-lobby-players [data]="queue" [myPlayer]="myPlayer"></sct-myc-lobby-players>
           </mat-card-content>
         </mat-card>
       </div>
@@ -33,8 +33,7 @@
                 <mat-card-title>{{ 'room.lobby.team.title' | translate:teamData.team }}</mat-card-title>
               </mat-card-header>
               <mat-card-content>
-                <ng-container
-                  *ngTemplateOutlet="playerList; context: {$implicit: teamData}"></ng-container>
+                <sct-myc-lobby-players [data]="teamData" [myPlayer]="myPlayer"></sct-myc-lobby-players>
               </mat-card-content>
               <mat-card-actions>
                 <button mat-icon-button (click)="doRemoveTeam(teamData.team)">
@@ -52,17 +51,5 @@
         </div>
       </div>
     </div>
-
-    <ng-template #playerList let-data>
-      <mat-list class="drop-list" cdkDropList [cdkDropListData]="data" (cdkDropListDropped)="doMovePlayer($event)">
-        <mat-list-item class="drop-list-item" cdkDrag *ngFor="let player of data.players"
-                       [cdkDragData]="player" [cdkDragDisabled]="player.id !== myPlayer.id && !myPlayer.roomLeader">
-          <div class="drop-list-item-placeholder" *cdkDragPlaceholder></div>
-          <mat-icon>{{ player.roomLeader ? 'supervisor_account' : 'person'}}</mat-icon>
-          <span class="w-100">{{ player.name }}</span>
-          <mat-icon *ngIf="player.teamLeader">supervised_user_circle</mat-icon>
-        </mat-list-item>
-      </mat-list>
-    </ng-template>
   </div>
 </div>

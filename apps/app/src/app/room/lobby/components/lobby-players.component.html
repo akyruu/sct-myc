@@ -1,0 +1,18 @@
+<mat-list class="drop-list" cdkDropList [cdkDropListData]="data" (cdkDropListDropped)="doMovePlayer($event)">
+  <mat-list-item class="drop-list-item" cdkDrag *ngFor="let player of data.players"
+                 [cdkDragData]="player" [cdkDragDisabled]="player.id !== myPlayer.id && !myPlayer.roomLeader">
+    <div class="drop-list-item-placeholder" *cdkDragPlaceholder></div>
+    <mat-icon>{{ player.roomLeader ? 'supervisor_account' : 'person'}}</mat-icon>
+    <span class="w-100">{{ player.name }}</span>
+    <ng-container *ngIf="data.team">
+      <mat-icon color="primary" *ngIf="player.teamLeader"
+                (click)="doTeamSetLeader(null, data.team)">
+        supervised_user_circle
+      </mat-icon>
+      <mat-icon class="text-secondary" *ngIf="!player.teamLeader && myPlayer.roomLeader"
+                (click)="doTeamSetLeader(player, data.team)">
+        supervised_user_circle
+      </mat-icon>
+    </ng-container>
+  </mat-list-item>
+</mat-list>
