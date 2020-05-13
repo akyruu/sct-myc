@@ -1,16 +1,10 @@
-.card-queue {
-  height: 100%;
-}
-
 .card-group, .card-queue {
-  min-height: 200px;
+  min-height: 156px;
+  height: 100%;
 
   .mat-card-content {
     overflow: hidden;
-  }
-
-  .mat-chip {
-    width: 100%;
+    margin: 0;
   }
 }
 
@@ -18,4 +12,3 @@
   border: dotted 3px;
   width: 100%;
 }
-

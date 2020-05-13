@@ -1,0 +1,11 @@
+@import "../../app/shared/components/theme-picker/theming";
+
+.argo-mole-theme {
+  @import "./argo-mole";
+  @include sct-myc-theme-picker-theme($argo-mole-theme);
+}
+
+.prospector-theme {
+  @import "./prospector";
+  @include sct-myc-theme-picker-theme($prospector-theme);
+}

@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Player, Team } from '@sct-myc/api-interfaces';
-import { Subscription } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Player, Room, Team} from '@sct-myc/api-interfaces';
+import {Subscription} from 'rxjs';
 
-import { AppContext } from '../../contexts';
-import { SocketService } from '../socket.service';
+import {AppContext} from '../../contexts';
+import {RoomField} from '../../models';
+import {SocketService} from '../socket.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RoomHandler {
   /* FIELDS ================================================================ */
   private readonly _subscriptions: Subscription[] = [];
@@ -19,10 +20,22 @@ export class RoomHandler {
   /* METHODS =============================================================== */
   bindEvents(): void {
     this._subscriptions.push(
+      this._socketService.onEvent('room:updated', this._roomUpdated.bind(this)),
       this._socketService.onEvent('room:players', this._players.bind(this)),
       this._socketService.onEvent('room:queue', this._queue.bind(this)),
       this._socketService.onEvent('room:teams', this._teams.bind(this))
     );
+  }
+
+  /**
+   * Event when room updated.
+   *
+   * @param room Room updated.
+   * @private
+   */
+  private _roomUpdated(room: Room): void {
+    Object.assign(this._appContext.room, room);
+    this._onChanges();
   }
 
   /**
@@ -33,6 +46,7 @@ export class RoomHandler {
    */
   private _players(players: Player[]): void {
     this._appContext.room.players = players;
+    this._onChanges({name: 'players', value: players});
   }
 
   /**
@@ -43,6 +57,7 @@ export class RoomHandler {
    */
   private _queue(queue: string[]): void {
     this._appContext.room.queue = queue;
+    this._onChanges({name: 'queue', value: queue});
   }
 
 
@@ -54,9 +69,19 @@ export class RoomHandler {
    */
   private _teams(teams: Team[]): void {
     this._appContext.room.teams = teams;
+    this._onChanges({name: 'teams', value: teams});
   }
 
   unbindEvents(): void {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  /* Changes --------------------------------------------------------------- */
+  private _onChanges(...fields: RoomField[]): void {
+    this._appContext.roomChanges.emit({
+      room: this._appContext.room,
+      fieldNames: fields.map(field => field.name),
+      fields: fields
+    });
   }
 }

@@ -4,6 +4,9 @@
 /* Theme for the ripple elements.*/
 /* stylelint-disable material/no-prefixes */
 /* stylelint-enable */
+/* Theme for the ripple elements.*/
+/* stylelint-disable material/no-prefixes */
+/* stylelint-enable */
 .mat-badge-content {
   font-weight: 600;
   font-size: 12px;
@@ -1945,16 +1948,25 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .sct-myc-loading .spinner .path {
   stroke: #ffab40; }
 
+.drop-list {
+  border-color: rgba(0, 0, 0, 0.12);
+  background-color: #fafafa; }
+
+.drop-list-item {
+  border-color: rgba(0, 0, 0, 0.12);
+  background-color: #fafafa; }
+  .drop-list-item:not(.drop-list-item-disabled):active {
+    box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12); }
+  .drop-list-item:not(.drop-list-item-disabled) .drop-list-item-remove:hover {
+    opacity: 0.54; }
+  .drop-list-item.drop-list-item-disabled, .drop-list-item.cdk-drag-disabled {
+    opacity: 0.4; }
+  .drop-list-item::after {
+    background: black; }
+
 body {
-  background: url(../../../assets/images/bg-prospector.jpg) no-repeat center center fixed;
+  background: url(../../assets/images/bg-prospector.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; }
-
-.card-button {
-  background: #fafafa; }
-  .card-button:hover {
-    background: rgba(0, 0, 0, 0.04); }
-  .card-button:active {
-    background: rgba(0, 0, 0, 0.12); }

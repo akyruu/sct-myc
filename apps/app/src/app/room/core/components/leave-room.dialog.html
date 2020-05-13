@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>{{ 'room.leave.title' | translate }}</h2>
 <mat-dialog-content>{{ 'room.leave.description' | translate }}</mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="doValidate()">
+  <button mat-flat-button color="primary" (click)="doValidate()">
     <mat-icon>check</mat-icon>
     {{ 'app.action.validate' | translate }}
   </button>
-  <button mat-raised-button (click)="doClose()">
+  <button mat-flat-button (click)="doClose()">
     <mat-icon>done</mat-icon>
     {{ 'app.action.close' | translate }}
   </button>

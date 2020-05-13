@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@import "node_modules/@angular/material/theming";
 
 @mixin sct-myc-theme-picker-theme($theme) {
   $primary: map-get($theme, primary);
@@ -18,14 +18,4 @@
       fill: mat-color($primary);
     }
   }
-}
-
-.argo-mole-theme {
-  @import "../../../styles/themes/custom/argo-mole";
-  @include sct-myc-theme-picker-theme($argo-mole-theme);
-}
-
-.prospector-theme {
-  @import "../../../styles/themes/custom/prospector";
-  @include sct-myc-theme-picker-theme($prospector-theme);
 }

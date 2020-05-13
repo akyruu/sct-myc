@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Room, RoomOptions } from '@sct-myc/api-interfaces';
+import {Injectable} from '@angular/core';
+import {Room, RoomOptions} from '@sct-myc/api-interfaces';
 
-import { SocketService } from '../socket.service';
+import {SocketService} from '../socket.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RoomService {
   /* CONSTRUCTOR =========================================================== */
   constructor(private _socketService: SocketService) {}
@@ -14,7 +14,7 @@ export class RoomService {
    *
    * @param options Room options.
    */
-  async createRoom(options: RoomOptions): Promise<Room> {
+  createRoom(options: RoomOptions): Promise<Room> {
     return this._socketService.emitAndWait('room:create', options);
   }
 
@@ -24,22 +24,33 @@ export class RoomService {
    * @param roomId Identifier of room to join.
    * @param options Room options.
    */
-  async joinRoom(roomId: string, options: RoomOptions): Promise<Room> {
-    return this._socketService.emitAndWait('room:join', { roomId: roomId, options: options });
+  joinRoom(roomId: string, options: RoomOptions): Promise<Room> {
+    return this._socketService.emitAndWait('room:join', {roomId: roomId, options: options});
   }
 
   /**
    * Leave current room.
    */
-  async leaveRoom(): Promise<void> {
+  leaveRoom(): Promise<void> {
     return this._socketService.emitAndWait('room:leave');
+  }
+
+  /* Player ---------------------------------------------------------------- */
+  /**
+   * Affect or detach player from/to a team.
+   *
+   * @param playerId Id of player to update.
+   * @param teamId Affected team (or null for detach)
+   */
+  setPlayerTeam(playerId: string, teamId?: number): Promise<void> {
+    return this._socketService.emitAndWait('room:player:setTeam', {playerId: playerId, teamId: teamId});
   }
 
   /* Team ------------------------------------------------------------------ */
   /**
    * Create a new team in current room.
    */
-  async addTeam(): Promise<void> {
+  addTeam(): Promise<void> {
     return this._socketService.emitAndWait('room:team:add');
   }
 
@@ -48,7 +59,7 @@ export class RoomService {
    *
    * @param teamId Identifier of team to remove
    */
-  async removeTeam(teamId: number): Promise<void> {
+  removeTeam(teamId: number): Promise<void> {
     return this._socketService.emitAndWait('room:team:remove', teamId);
   }
 }

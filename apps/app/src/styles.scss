@@ -17,9 +17,18 @@
 @import "styles/reboot";
 @import "styles/utilities";
 
-$card-avatar-size: 40px;
+@import "styles/loading/styles";
+@import "styles/drop-list/style";
+
+/* Variables --------------------------------------------------------------- */
+$card-avatar-size-1: 20px;
+$card-avatar-font-size-1: 30px;
+$card-avatar-size-2: 40px;
+$card-avatar-font-size-2: 60px;
+
 $gutter-width: 1em;
 $gutter-height: 1em;
+
 $toolbar-height: 64px;
 
 /* =========================================================================
@@ -92,19 +101,26 @@ body {
   }
 }
 
+.mat-card-header {
+  .mat-icon.mat-card-avatar {
+    width: $card-avatar-size-1;
+    height: $card-avatar-size-1;
+    font-size: $card-avatar-font-size-1;
+  }
+
+  &:has(.mat-card-subtitle) {
+    .mat-icon.mat-card-avatar {
+      width: $card-avatar-size-2;
+      height: $card-avatar-size-2;
+      font-size: $card-avatar-font-size-2;
+    }
+  }
+}
+
 .mat-icon {
   & + * {
     margin-left: .25em;
   }
-
-  &.mat-card-avatar {
-    font-size: $card-avatar-size;
-
-    & + .mat-card-header-text {
-      margin-left: 1.25em;
-    }
-  }
-
 }
 
 .mat-toolbar + .mat-progress-bar {

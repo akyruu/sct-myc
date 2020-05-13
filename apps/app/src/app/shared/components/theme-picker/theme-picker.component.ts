@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Theme, ThemeService } from '../../core';
+import { Theme, ThemeService } from '../../../core';
 
 @Component({
   selector: 'sct-myc-theme-picker',
   templateUrl: './theme-picker.component.html',
-  styleUrls: ['./theme-picker.component.scss', './theme-picker-theming.component.scss']
+  styleUrls: ['./theme-picker.component.scss', './_theming.scss']
 })
 export class ThemePickerComponent implements OnInit {
   /* FIELDS ================================================================ */

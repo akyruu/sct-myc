@@ -18,12 +18,12 @@
   </mat-card-content>
   <mat-card-actions>
     <div class="row">
-      <button mat-raised-button color="primary" class="col-12 col-md"
+      <button mat-flat-button color="primary" class="col-12 col-md"
               [disabled]="form.invalid || loading" (click)="doCreateRoom()">
         <mat-icon>group</mat-icon>
         {{ 'welcome.player.room.create' | translate }}
       </button>
-      <button mat-raised-button color="accent" class="col-12 col-md"
+      <button mat-flat-button color="accent" class="col-12 col-md"
               [disabled]="form.invalid || loading" (click)="doJoinRoom()">
         <mat-icon>person_add</mat-icon>
         {{ 'welcome.player.room.join' | translate }}

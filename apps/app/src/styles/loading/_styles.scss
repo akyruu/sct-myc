@@ -11,7 +11,7 @@ $unit: 100px;
   .logo {
     width: $unit;
     height: $unit;
-    mask: url(assets/icons/pickaxe.svg) center center no-repeat;
+    mask: url(apps/app/src/assets/icons/pickaxe.svg) center center no-repeat;
     mask-size: cover;
   }
 

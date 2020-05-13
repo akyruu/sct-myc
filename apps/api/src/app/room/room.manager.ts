@@ -1,13 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Player, Room } from '@sct-myc/api-interfaces';
-import { Socket } from 'socket.io';
+import {Injectable} from '@angular/core';
+import {Player, Room} from '@sct-myc/api-interfaces';
+import {Socket} from 'socket.io';
+import {RoomEmitter} from './room.emitter';
 
-import { RoomService } from './room.service';
+import {RoomService} from './room.service';
 
 @Injectable()
 export class RoomManager {
   /* CONSTRUCTOR =========================================================== */
-  constructor(private _roomService: RoomService) {}
+  constructor(
+    private _roomEmitter: RoomEmitter,
+    private _roomService: RoomService
+  ) {}
 
   /* METHODS =============================================================== */
   createRoom(client: Socket, player: Player): Room {
@@ -32,8 +36,8 @@ export class RoomManager {
 
     room = this._roomService.update(room);
     client.join(room.id);
-    this._roomBroadcast(client, room.id, 'room:players', room.players);
-    this._roomBroadcast(client, room.id, 'room:queue', room.queue);
+    this._roomEmitter.broadcast(client, room.id, 'room:players', room.players);
+    this._roomEmitter.broadcast(client, room.id, 'room:queue', room.queue);
     return room;
   }
 
@@ -45,16 +49,16 @@ export class RoomManager {
         this._roomService.delete(roomId);
         return;
       }
-      this._roomBroadcast(client, room.id, 'room:players', room.players);
+      this._roomEmitter.broadcast(client, room.id, 'room:players', room.players);
 
       if (room.queue.includes(playerId)) {
         room.queue.splice(room.queue.indexOf(playerId), 1);
-        this._roomBroadcast(client, room.id, 'room:queue', room.queue);
+        this._roomEmitter.broadcast(client, room.id, 'room:queue', room.queue);
       } else {
         for (const team of room.teams) {
           if (team.playerIds.includes(playerId)) {
             team.playerIds.splice(team.playerIds.indexOf(playerId), 1);
-            this._roomBroadcast(client, room.id, 'room:team:updated', team);
+            this._roomEmitter.broadcast(client, room.id, 'room:team:updated', team);
             break;
           }
         }
@@ -72,37 +76,28 @@ export class RoomManager {
     });
 
     room = this._roomService.update(room);
-    this._roomEmit(client, roomId, 'room:teams', room.teams);
+    this._roomEmitter.emit(client, roomId, 'room:teams', room.teams);
   }
 
   removeTeam(client: Socket, roomId: string, teamId: number) {
     let room = this._roomService.read(roomId);
 
-    const teamIndex = room.teams.findIndex(t => t.id === teamId);
+    let teamIndex = room.teams.findIndex(t => t.id === teamId);
     const team = room.teams[teamIndex];
-    const teamPlayers = room.players.filter(player => team.playerIds.includes(player.id));
+    const teamPlayers = room.players.filter(player => player.teamId === team.id);
     teamPlayers.forEach(player => {
       player.teamId = null;
       player.teamLeader = false;
       room.queue.push(player.id);
     });
     room.teams.splice(teamIndex, 1);
+    room.teams.slice(teamIndex).forEach(team => {
+      team.id--;
+      room.players.filter(player => team.playerIds.includes(player.id))
+        .forEach(player => player.teamId = team.id);
+    });
 
     room = this._roomService.update(room);
-    this._roomEmit(client, roomId, 'room:teams', room.teams);
-    if (teamPlayers.length > 0) {
-      this._roomEmit(client, roomId, 'room:players', room.players);
-      this._roomEmit(client, roomId, 'room:queue', room.queue);
-    }
-  }
-
-  /* Tools ----------------------------------------------------------------- */
-  private _roomBroadcast(client: Socket, roomId: string, eventName: string, data?: any): void {
-    client.in(roomId).broadcast.emit(eventName, data);
-  }
-
-  private _roomEmit(client: Socket, roomId: string, eventName: string, data?: any): void {
-    client.emit(eventName, data);
-    this._roomBroadcast(client, roomId, eventName, data);
+    this._roomEmitter.emit(client, roomId, 'room:updated', room);
   }
 }

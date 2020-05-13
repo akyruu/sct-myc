@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { RoomOptions } from '@sct-myc/api-interfaces';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {RoomOptions} from '@sct-myc/api-interfaces';
 
-import { AppContext } from '../../contexts';
-import { SocketService } from '../socket.service';
-import { RoomHandler } from './room.handler';
-import { RoomService } from './room.service';
+import {AppContext} from '../../contexts';
+import {SocketService} from '../socket.service';
+import {RoomHandler} from './room.handler';
+import {RoomService} from './room.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RoomManager {
   /* CONSTRUCTOR =========================================================== */
   constructor(
@@ -44,7 +44,7 @@ export class RoomManager {
   async joinRoom(roomId: string, playerName: string): Promise<void> {
     this._socketService.connect();
 
-    const room = await this._roomService.joinRoom(roomId, { playerName: playerName });
+    const room = await this._roomService.joinRoom(roomId, {playerName: playerName});
     this._appContext.room = room;
     this._appContext.myPlayer = room.players.find(player => player.name === playerName);
     this._roomHandler.bindEvents();

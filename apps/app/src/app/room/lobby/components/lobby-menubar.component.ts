@@ -1,9 +1,8 @@
-import { Clipboard } from '@angular/cdk/clipboard';
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { Room } from '@sct-myc/api-interfaces';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {Component, OnInit} from '@angular/core';
+import {Room} from '@sct-myc/api-interfaces';
 
-import { AppContext } from '../../../core';
+import {AppContext} from '../../../core';
 
 @Component({
   selector: 'sct-myc-lobby-menubar',
@@ -16,7 +15,6 @@ export class LobbyMenubarComponent implements OnInit {
   /* CONSTRUCTOR =========================================================== */
   constructor(
     private _clipboard: Clipboard,
-    private _location: Location,
     private _appContext: AppContext
   ) {}
 
@@ -31,6 +29,6 @@ export class LobbyMenubarComponent implements OnInit {
   }
 
   doCopyRoomUrl() {
-    this._clipboard.copy('/room?join=' + this._room.id);
+    this._clipboard.copy(window.location.protocol + '//' + window.location.host + '/room?join=' + this._room.id);
   }
 }

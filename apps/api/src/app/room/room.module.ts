@@ -1,18 +1,26 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 
-import { PlayerHelper } from './player.helper';
-import { RoomController } from './room.controller';
-import { RoomGateway } from './room.gateway';
-import { RoomManager } from './room.manager';
-import { RoomService } from './room.service';
+import {PlayerHelper} from './player.helper';
+import {PlayerManager} from './player.manager';
+import {RoomController} from './room.controller';
+import {RoomEmitter} from './room.emitter';
+import {RoomGateway} from './room.gateway';
+import {RoomManager} from './room.manager';
+import {RoomService} from './room.service';
+import {SessionGuard} from './session.guard';
+import {SessionService} from './session.service';
 
 @Module({
   controllers: [RoomController],
   providers: [
     PlayerHelper,
+    PlayerManager,
     RoomGateway,
+    RoomEmitter,
     RoomManager,
-    RoomService
+    RoomService,
+    SessionGuard,
+    SessionService
   ]
 })
 export class RoomModule {}

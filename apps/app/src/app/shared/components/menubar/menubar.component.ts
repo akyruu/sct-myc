@@ -2,8 +2,8 @@ import { Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef } from '
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AppContext } from '../../core';
-import { Icon } from '../models';
+import { AppContext } from '../../../core';
+import { Icon } from '../../models';
 
 @Component({
   selector: 'sct-myc-menubar',

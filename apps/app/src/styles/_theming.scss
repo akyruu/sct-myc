@@ -1,12 +1,14 @@
 @import "node_modules/@angular/material/theming";
 
-@import "apps/app/src/styles/themes/theming-loading";
+@import "loading/theming";
+@import "drop-list/theming";
 
 @include mat-core();
 
 @mixin app-theme($theme, $bgImageUrl) {
   @include angular-material-theme($theme);
   @include sct-myc-loading-theme($theme);
+  @include sct-myc-drop-list-theme($theme);
 
   body {
     background: $bgImageUrl no-repeat center center fixed;
@@ -15,6 +17,4 @@
     -o-background-size: cover;
     background-size: cover;
   }
-
-  $background: map-get($theme, background);
 }

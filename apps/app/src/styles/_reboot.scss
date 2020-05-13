@@ -5,6 +5,12 @@ button:focus {
 /* =========================================================================
  * MATERIAL
  * ========================================================================= */
+.mat-card-header {
+  .mat-card-title {
+    line-height: 24px;
+  }
+}
+
 .mat-icon > svg {
   vertical-align: inherit;
 }

@@ -1,57 +1,68 @@
 <sct-myc-lobby-menubar></sct-myc-lobby-menubar>
-<div class="main container">
-  <div class="row">
-    <div class="col-sm-4">
-      <mat-card class="card-queue mat-card-fixed-height">
-        <mat-card-header>
-          <mat-icon mat-card-avatar
-                    [matBadge]="queue.length.toString()" matBadgeColor="accent" matBadgePosition="above before">
-            person
-          </mat-icon>
-          <mat-card-title>{{ 'room.lobby.queue.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'room.lobby.queue.description' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <ng-container *ngTemplateOutlet="playerList; context: {$implicit: queue}"></ng-container>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="col-sm-8">
-      <div class="row">
-        <div class="col-sm-6" *ngFor="let team of room.teams">
-          <mat-card class="card-group mat-card-fixed-height">
-            <mat-card-header>
-              <mat-icon mat-card-avatar
-                        [matBadge]="team.playerIds.length.toString()"
-                        [matBadgeColor]="team.playerIds.length === 0 ? 'warn' : 'accent'"
-                        matBadgePosition="above before">
-                group
-              </mat-icon>
-              <mat-card-title>{{ 'room.lobby.team.title' | translate:team }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <ng-container *ngTemplateOutlet="playerList; context: {$implicit: getTeamPlayers(team)}"></ng-container>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-icon-button (click)="doRemoveTeam(team)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="col-sm-6" *ngIf="myPlayer.roomLeader">
-          <button mat-flat-button class="card-group button-add-group" (click)="doAddTeam()">
-            <div>{{ 'room.lobby.team.add' | translate }}</div>
-            <mat-icon>group_add</mat-icon>
-          </button>
+<div cdkScrollable>
+  <div class="main container" cdkDropListGroup>
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <mat-card class="card-queue mat-card-fixed-height">
+          <mat-card-header>
+            <mat-icon mat-card-avatar
+                      [matBadge]="queue.players.length.toString()"
+                      [matBadgeColor]="queue.players.length > 0 ? 'warn' : 'accent'"
+                      matBadgePosition="above before">
+              person
+            </mat-icon>
+            <mat-card-title>{{ 'room.lobby.queue.title' | translate }}</mat-card-title>
+            <mat-card-subtitle>{{ 'room.lobby.queue.description' | translate }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <ng-container *ngTemplateOutlet="playerList; context: {$implicit: queue}"></ng-container>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-6 col-md-8">
+        <div class="row">
+          <div class="col-md-6" *ngFor="let teamData of teams">
+            <mat-card class="card-group mat-card-fixed-height">
+              <mat-card-header>
+                <mat-icon mat-card-avatar
+                          [matBadge]="teamData.players.length.toString()"
+                          [matBadgeColor]="teamData.players.length === 0 ? 'warn' : 'accent'"
+                          matBadgePosition="above before">
+                  group
+                </mat-icon>
+                <mat-card-title>{{ 'room.lobby.team.title' | translate:teamData.team }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <ng-container
+                  *ngTemplateOutlet="playerList; context: {$implicit: teamData}"></ng-container>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-icon-button (click)="doRemoveTeam(teamData.team)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+          <div class="col-md-6" *ngIf="myPlayer.roomLeader">
+            <button mat-flat-button class="card-group button-add-group" (click)="doAddTeam()">
+              <div>{{ 'room.lobby.team.add' | translate }}</div>
+              <mat-icon>group_add</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+    <ng-template #playerList let-data>
+      <mat-list class="drop-list" cdkDropList [cdkDropListData]="data" (cdkDropListDropped)="doMovePlayer($event)">
+        <mat-list-item class="drop-list-item" cdkDrag *ngFor="let player of data.players"
+                       [cdkDragData]="player" [cdkDragDisabled]="player.id !== myPlayer.id && !myPlayer.roomLeader">
+          <div class="drop-list-item-placeholder" *cdkDragPlaceholder></div>
+          <mat-icon>{{ player.roomLeader ? 'supervisor_account' : 'person'}}</mat-icon>
+          <span class="w-100">{{ player.name }}</span>
+          <mat-icon *ngIf="player.teamLeader">supervised_user_circle</mat-icon>
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
   </div>
 </div>
-
-<ng-template #playerList let-players>
-  <mat-chip-list *ngFor="let player of players" cdkDropList>
-    <mat-chip>{{ player.name }}</mat-chip>
-  </mat-chip-list>
-</ng-template>
