@@ -72,4 +72,12 @@ export class RoomService {
   removeTeam(teamId: number): Promise<void> {
     return this._socketService.emitAndWait('room:team:remove', teamId);
   }
+
+  /* Rush ------------------------------------------------------------------ */
+  /**
+   * Start the rush session.
+   */
+  startRush(): Promise<void> {
+    return this._socketService.emitAndWait('room:rush:start');
+  }
 }

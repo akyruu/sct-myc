@@ -17,10 +17,11 @@ interface DragDropData {
 export class LobbyComponent implements OnInit {
   /* FIELDS ================================================================ */
   myPlayer: Player;
+  room: Room;
   queue: DragDropData;
   teams: DragDropData[] = [];
+  valid: boolean;
 
-  private _room: Room;
   private _subscription: Subscription;
 
   /* CONSTRUCTOR =========================================================== */
@@ -31,7 +32,7 @@ export class LobbyComponent implements OnInit {
 
   /* METHODS =============================================================== */
   ngOnInit(): void {
-    this._room = this._appContext.room;
+    this.room = this._appContext.room;
     this._refresh();
 
     this._subscription = this._appContext.roomChanges.subscribe(this._refresh.bind(this));
@@ -50,13 +51,13 @@ export class LobbyComponent implements OnInit {
   private _refresh(): void {
     this.myPlayer = this._appContext.myPlayer;
     this.queue = {
-      players: this._room.players
-        .filter(player => this._room.queue.includes(player.id))
+      players: this.room.players
+        .filter(player => this.room.queue.includes(player.id))
         .sort((p1, p2) => p1.name.localeCompare(p2.name))
     };
-    this.teams = this._room.teams.map(team => ({
+    this.teams = this.room.teams.map(team => ({
       team: team,
-      players: this._room.players
+      players: this.room.players
         .filter(player => player.teamId === team.id)
         .sort((p1, p2) => {
           if (p1.teamLeader) {
@@ -67,5 +68,6 @@ export class LobbyComponent implements OnInit {
           return p1.name.localeCompare(p2.name);
         })
     }));
+    this.valid = this.queue.players.length === 0;
   }
 }

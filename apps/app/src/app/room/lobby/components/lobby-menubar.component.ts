@@ -1,34 +1,35 @@
 import {Clipboard} from '@angular/cdk/clipboard';
-import {Component, OnInit} from '@angular/core';
-import {Room} from '@sct-myc/api-interfaces';
+import {Component, Input} from '@angular/core';
+import {Player, Room} from '@sct-myc/api-interfaces';
 
-import {AppContext} from '../../../core';
+import {RoomService} from '../../../core';
 
 @Component({
   selector: 'sct-myc-lobby-menubar',
   templateUrl: './lobby-menubar.component.html'
 })
-export class LobbyMenubarComponent implements OnInit {
+export class LobbyMenubarComponent {
   /* FIELDS ================================================================ */
-  private _room: Room;
+  @Input() room: Room;
+  @Input() myPlayer: Player;
+  @Input() rushStartDisabled: boolean;
 
   /* CONSTRUCTOR =========================================================== */
   constructor(
     private _clipboard: Clipboard,
-    private _appContext: AppContext
+    private _roomService: RoomService
   ) {}
 
   /* METHODS =============================================================== */
-  ngOnInit(): void {
-    this._room = this._appContext.room;
-  }
-
-  /* Events ---------------------------------------------------------------- */
   doCopyRoomId(): void {
-    this._clipboard.copy(this._room.id);
+    this._clipboard.copy(this.room.id);
   }
 
   doCopyRoomUrl() {
-    this._clipboard.copy(window.location.protocol + '//' + window.location.host + '/room?join=' + this._room.id);
+    this._clipboard.copy(window.location.protocol + '//' + window.location.host + '/room?join=' + this.room.id);
+  }
+
+  doRushStart() {
+    this._roomService.startRush().then();
   }
 }

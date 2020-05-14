@@ -13,5 +13,11 @@
         {{ 'room.lobby.menubar.share.url' | translate }}
       </button>
     </mat-menu>
+    <button mat-icon-button *ngIf="myPlayer.roomLeader"
+            [title]="'room.lobby.action.launch' | translate"
+            [disabled]="rushStartDisabled"
+            (click)="doRushStart()">
+      <mat-icon>launch</mat-icon>
+    </button>
   </ng-template>
 </sct-myc-menubar>

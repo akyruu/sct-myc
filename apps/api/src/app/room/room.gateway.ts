@@ -2,14 +2,12 @@ import {UseGuards} from '@nestjs/common';
 import {ConnectedSocket, MessageBody, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway} from '@nestjs/websockets';
 import {Room, RoomOptions} from '@sct-myc/api-interfaces';
 import {Socket} from 'socket.io';
+import {SessionGuard, SessionService} from '../session';
 
-import {TransWsException} from '../commons';
+import {RoomService, TransWsException} from '../shared';
 import {PlayerHelper} from './player.helper';
 import {PlayerManager} from './player.manager';
 import {RoomManager} from './room.manager';
-import {RoomService} from './room.service';
-import {SessionGuard} from './session.guard';
-import {SessionService} from './session.service';
 import {TeamManager} from './team.manager';
 
 @WebSocketGateway()
@@ -114,6 +112,14 @@ export class RoomGateway implements OnGatewayDisconnect {
   ): void {
     const roomId = this._sessionService.get(client).roomId;
     this._roomManager.removeTeam(client, roomId, teamId);
+  }
+
+  /* Rush ------------------------------------------------------------------ */
+  @UseGuards(SessionGuard)
+  @SubscribeMessage('room:rush:start')
+  onStartRush(@ConnectedSocket() client: Socket): void {
+    const roomId = this._sessionService.get(client).roomId;
+    this._roomManager.startRush(client, roomId);
   }
 
   /* Tools ----------------------------------------------------------------- */

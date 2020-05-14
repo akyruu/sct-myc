@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import {Player, Room, Team} from '@sct-myc/api-interfaces';
 import {Subscription} from 'rxjs';
 
@@ -13,6 +14,7 @@ export class RoomHandler {
 
   /* CONSTRUCTOR =========================================================== */
   constructor(
+    private _router: Router,
     private _appContext: AppContext,
     private _socketService: SocketService
   ) {}
@@ -26,6 +28,7 @@ export class RoomHandler {
       this._socketService.onEvent('room:queue', this._queue.bind(this)),
       this._socketService.onEvent('room:team:updated', this._teamUpdated.bind(this)),
       this._socketService.onEvent('room:teams', this._teams.bind(this)),
+      this._socketService.onEvent('room:rush:started', this._rushStarted.bind(this)),
     );
   }
 
@@ -93,6 +96,17 @@ export class RoomHandler {
   private _teams(teams: Team[]): void {
     this._appContext.room.teams = teams;
     this._onChanges({name: 'teams', value: teams});
+  }
+
+  /**
+   * Event when rush started.
+   *
+   * @param room Room updated.
+   * @private
+   */
+  private _rushStarted(room: Room): void {
+    Object.assign(this._appContext.room, room);
+    this._router.navigate(['/room/rush']).then();
   }
 
   unbindEvents(): void {

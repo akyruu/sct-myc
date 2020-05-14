@@ -12,6 +12,9 @@
   "room": {
     "lobby": {
       "title": "Lobby",
+      "action": {
+        "launch": "Lancer la partie"
+      },
       "menubar": {
         "share": {
           "title": "Partager la partie",

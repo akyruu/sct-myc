@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Player, Room} from '@sct-myc/api-interfaces';
 import {Socket} from 'socket.io';
-import {RoomEmitter} from './room.emitter';
 
-import {RoomService} from './room.service';
+import {RoomEmitter, RoomService, RushHelper} from '../shared';
 
 @Injectable()
 export class RoomManager {
   /* CONSTRUCTOR =========================================================== */
   constructor(
     private _roomEmitter: RoomEmitter,
-    private _roomService: RoomService
+    private _roomService: RoomService,
+    private _rushHelper: RushHelper
   ) {}
 
   /* METHODS =============================================================== */
@@ -99,5 +99,18 @@ export class RoomManager {
 
     room = this._roomService.update(room);
     this._roomEmitter.emit(client, roomId, 'room:updated', room);
+  }
+
+  /* Rush ------------------------------------------------------------------ */
+  startRush(client: Socket, roomId: string): void {
+    let room = this._roomService.read(roomId);
+    room.started = true;
+    room.teams.forEach(team => {
+      team.rush = this._rushHelper.createTeamRush(team, room);
+      team.rushs = [];
+    });
+
+    room = this._roomService.update(room);
+    this._roomEmitter.emit(client, roomId, 'room:rush:started');
   }
 }

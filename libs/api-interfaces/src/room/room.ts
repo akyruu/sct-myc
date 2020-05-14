@@ -1,5 +1,5 @@
-import { Player } from './player.interface';
-import { Team } from './team.interface';
+import {Player} from './player';
+import {Team} from './team';
 
 export interface Room {
   id: string;

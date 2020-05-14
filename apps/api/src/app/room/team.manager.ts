@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Socket} from 'socket.io';
-import {RoomEmitter} from './room.emitter';
 
-import {RoomService} from './room.service';
+import {RoomEmitter, RoomService} from '../shared';
 
 @Injectable()
 export class TeamManager {

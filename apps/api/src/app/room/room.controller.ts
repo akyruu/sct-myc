@@ -1,7 +1,7 @@
 import {Controller, Get} from '@nestjs/common';
 import {Room} from '@sct-myc/api-interfaces';
 
-import {RoomService} from './room.service';
+import {RoomService} from '../shared';
 
 @Controller('/room')
 export class RoomController {
