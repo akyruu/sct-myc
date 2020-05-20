@@ -3,7 +3,7 @@
   <span>{{ 'room.rush.state.prepare' | translate }}</span>
   <span class="flex-spacer"></span>
   <mat-slide-toggle [checked]="player.rush.ready"
-                    [disabled]="form.invalid"
+                    [disabled]="form.invalid || !myPlayer"
                     (change)="doReady($event.checked)">
     {{ 'app.common.ready' | translate }}
   </mat-slide-toggle>
@@ -17,7 +17,7 @@
     <mat-card-content>
       <form #form="ngForm">
         <mat-form-field class="w-100">
-          <mat-select name="rucksackType" [required]="true" [disabled]="player.rush.ready"
+          <mat-select name="rucksackType" [required]="true" [disabled]="player.rush.ready || !myPlayer"
                       [(ngModel)]="player.rush.rucksackType"
                       [placeholder]="'room.rush.player.rucksack' | translate"
                       [compareWith]="rucksackComparator"
@@ -30,3 +30,4 @@
     </mat-card-content>
   </mat-card>
 </div>
+<pre>{{player|json}}</pre>

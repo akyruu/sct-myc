@@ -16,6 +16,7 @@ export class TeamPrepareComponent implements OnInit, OnDestroy {
 
   team: Team;
   vehicles: Vehicle[];
+  myTeam: boolean;
 
   readonly players = {
     ready: <Player[]>[],
@@ -24,6 +25,7 @@ export class TeamPrepareComponent implements OnInit, OnDestroy {
     allReady: false
   };
 
+  private _myTeamId: number;
   private readonly _subscriptions: Subscription[] = [];
 
   /* CONSTRUCTOR =========================================================== */
@@ -35,11 +37,13 @@ export class TeamPrepareComponent implements OnInit, OnDestroy {
 
   /* METHODS =============================================================== */
   ngOnInit(): void {
+    this._myTeamId = this._appContext.player.teamId;
     this._subscriptions.push(
       this._route.data.subscribe((data: { team: Team, vehicles: Vehicle[] }) => {
         this.team = data.team;
         this.players.all = this._appContext.room.players.filter(player => player.teamId === data.team.id);
         this.vehicles = data.vehicles;
+        this.myTeam = this.team.id === this._myTeamId;
         this._refresh();
       }),
       this._appContext.playerRushChanges.subscribe(playerRush => {

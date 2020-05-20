@@ -6,7 +6,7 @@
     <span class="w-100">{{ player.name }}</span>
     <ng-container *ngIf="data.team">
       <mat-icon color="primary" *ngIf="player.teamLeader"
-                (click)="doTeamSetLeader(null, data.team)">
+                (click)="myPlayer.roomLeader && doTeamSetLeader(null, data.team)">
         supervised_user_circle
       </mat-icon>
       <mat-icon class="text-secondary" *ngIf="!player.teamLeader && myPlayer.roomLeader"

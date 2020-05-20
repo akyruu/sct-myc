@@ -2,7 +2,9 @@
   <mat-icon>group</mat-icon>
   <span>{{ 'room.rush.state.prepare' | translate }}</span>
   <span class="flex-spacer"></span>
-  <button mat-flat-button color="accent" [disabled]="form.invalid || !players.allReady" (click)="doLaunch()">
+  <button mat-flat-button color="accent"
+          [disabled]="form.invalid || !players.allReady || !myTeam"
+          (click)="doLaunch()">
     <mat-icon>launch</mat-icon>
     {{ 'app.action.launch' | translate }}
   </button>
@@ -18,7 +20,7 @@
         <mat-card-content>
           <form #form="ngForm">
             <mat-form-field class="w-100">
-              <mat-select name="vehicle" [required]="true"
+              <mat-select name="vehicle" [required]="true" [disabled]="!myTeam"
                           [placeholder]="'room.rush.team.vehicle' | translate"
                           [(ngModel)]="team.rush.vehicle"
                           [compareWith]="vehicleComparator"

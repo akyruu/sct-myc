@@ -14,10 +14,11 @@ export class PlayerPrepareComponent implements OnInit, OnDestroy {
   /* FIELDS ================================================================ */
   readonly rucksackComparator = RucksackComparator;
 
-  myPlayerId: string;
   player: Player;
   rucksacks: Rucksack[] = [];
+  myPlayer: boolean;
 
+  private _myPlayerId: string;
   private _subscription: Subscription;
 
   /* CONSTRUCTOR =========================================================== */
@@ -30,13 +31,14 @@ export class PlayerPrepareComponent implements OnInit, OnDestroy {
 
   /* METHODS =============================================================== */
   ngOnInit(): void {
-    this.myPlayerId = this._appContext.playerId.value;
+    this._myPlayerId = this._appContext.playerId.value;
     this._subscription = this._route.data.subscribe((data: {
       player: Player,
       rucksacks: Rucksack[]
     }) => {
       this.player = data.player;
       this.rucksacks = data.rucksacks;
+      this.myPlayer = data.player.id === this._myPlayerId;
     });
   }
 

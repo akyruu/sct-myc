@@ -62,6 +62,7 @@ export class RoomHandler {
    */
   private _players(players: Player[]): void {
     this._appContext.room.players = players;
+    this._appContext.player = players.find(player => player.id === this._appContext.playerId.value);
     this._onChanges({name: 'players', value: players});
   }
 
