@@ -1,22 +1,28 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {Player, Room} from '@sct-myc/api-interfaces';
+import {Player, PlayerRush, Room, TeamRush} from '@sct-myc/api-interfaces';
 import {BehaviorSubject} from 'rxjs';
 
-import {RoomUpdatedEvent, StringLocalStorageItem} from '../models';
+import {RoomUpdatedEvent, StringStorageItem} from '../models';
 
 @Injectable({providedIn: 'root'})
 export class AppContext {
   /* FIELDS ================================================================ */
-  readonly playerName = new StringLocalStorageItem('playerName');
+  /* Local ----------------------------------------------------------------- */
+  readonly playerName = new StringStorageItem('local', 'playerName');
+
+  /* Session --------------------------------------------------------------- */
+  readonly roomId = new StringStorageItem('session', 'roomId');
+  readonly playerId = new StringStorageItem('session', 'playerId');
+
+  /* Execution ------------------------------------------------------------- */
   readonly loading = new BehaviorSubject<boolean>(false);
+  error = false; // Use this indicator for bypass deactivate guard
 
-  /* Room ------------------------------------------------------------------ */
-  myPlayerId: string;
+  /* Room */
   room: Room;
-  readonly roomChanges = new EventEmitter<RoomUpdatedEvent>();
+  player: Player;
 
-  /* METHODS =============================================================== */
-  get myPlayer(): Player {
-    return this.room.players.find(player => player.id === this.myPlayerId);
-  }
+  readonly roomChanges = new EventEmitter<RoomUpdatedEvent>();
+  readonly teamRushChanges = new EventEmitter<TeamRush>();
+  readonly playerRushChanges = new EventEmitter<PlayerRush>();
 }

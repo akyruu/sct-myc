@@ -2,14 +2,38 @@
   "app": {
     "title": "Calculateur de rendement minier",
     "action": {
+      "cancel": "Annuler",
       "close": "Fermer",
+      "launch": "Lancer",
       "validate": "Valider"
+    },
+    "common": {
+      "empty": "<Vide>",
+      "ready": "Prêt",
+      "notReady": "Pas prêt"
+    },
+    "label": {
+      "rucksack": "{{name}} ({{storage}} SP)",
+      "vehicle": "{{name}} ({{cargoCapacity}} SCU)"
+    }
+  },
+  "error": {
+    "notFound": {
+      "title": "Page non trouvée",
+      "description": "La page que vous avez demandé n'a pas été trouvé.",
+      "action": "Vous pouvez revenir à la page précedente ou revenir à la page d'accueil",
+      "back": "Revenir en arrière",
+      "home": "Revenir à l'accueil"
     }
   },
   "menubar": {
     "theme": "Choisir un thème"
   },
   "room": {
+    "leave": {
+      "title": "Quitter la partie",
+      "description": "Vous êtes sur le point de quitter la partie en cours. Êtes-vous sûr ?"
+    },
     "lobby": {
       "title": "Lobby",
       "action": {
@@ -29,6 +53,21 @@
       "team": {
         "title": "Equipe #{{id}}",
         "add": "Ajouter une équipe"
+      }
+    },
+    "rush": {
+      "player": {
+        "title": "Joueur {{name}}",
+        "equipment": "Choix de l'équipement",
+        "rucksack": "Sac à dos"
+      },
+      "state": {
+        "prepare": "Préparation"
+      },
+      "team": {
+        "title": "Team #{{id}}",
+        "vehicle": "Véhicule",
+        "crew": "Équipage"
       }
     }
   },

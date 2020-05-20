@@ -2,26 +2,22 @@ import {Injectable} from '@angular/core';
 import {Player, Room} from '@sct-myc/api-interfaces';
 import {Socket} from 'socket.io';
 
-import {RoomEmitter, RoomService, RushHelper} from '../shared';
+import {PlayerHelper, RoomEmitter, RoomHelper, RoomService, TeamHelper} from '../shared';
 
 @Injectable()
 export class RoomManager {
   /* CONSTRUCTOR =========================================================== */
   constructor(
+    private _playerHelper: PlayerHelper,
     private _roomEmitter: RoomEmitter,
+    private _roomHelper: RoomHelper,
     private _roomService: RoomService,
-    private _rushHelper: RushHelper
+    private _teamHelper: TeamHelper
   ) {}
 
   /* METHODS =============================================================== */
   createRoom(client: Socket, player: Player): Room {
-    let room: Room = {
-      id: undefined,
-      leaderId: player.id,
-      players: [player],
-      queue: [player.id],
-      teams: []
-    };
+    let room = this._roomHelper.createRoom(player);
     player.roomLeader = true;
 
     room = this._roomService.create(room);
@@ -31,13 +27,18 @@ export class RoomManager {
 
   joinRoom(client: Socket, player: Player, roomId: string): Room {
     let room = this._roomService.read(roomId);
-    room.players.push(player);
-    room.queue.push(player.id);
+    this._roomHelper.addPlayer(room, player);
 
     room = this._roomService.update(room);
     client.join(room.id);
     this._roomEmitter.broadcast(client, room.id, 'room:players', room.players);
     this._roomEmitter.broadcast(client, room.id, 'room:queue', room.queue);
+    return room;
+  }
+
+  rejoinRoom(client: Socket, roomId: string): Room {
+    let room = this._roomService.read(roomId);
+    client.join(room.id);
     return room;
   }
 
@@ -70,10 +71,7 @@ export class RoomManager {
   /* Teams ----------------------------------------------------------------- */
   addTeam(client: Socket, roomId: string): void {
     let room = this._roomService.read(roomId);
-    room.teams.push({
-      id: room.teams.length + 1,
-      playerIds: []
-    });
+    room.teams.push(this._teamHelper.createTeam(room));
 
     room = this._roomService.update(room);
     this._roomEmitter.emit(client, roomId, 'room:teams', room.teams);
@@ -105,12 +103,11 @@ export class RoomManager {
   startRush(client: Socket, roomId: string): void {
     let room = this._roomService.read(roomId);
     room.started = true;
-    room.teams.forEach(team => {
-      team.rush = this._rushHelper.createTeamRush(team, room);
-      team.rushs = [];
-    });
+
+    room.players.forEach(player => player.rush = this._playerHelper.createRush(player));
+    room.teams.forEach(team => team.rush = this._teamHelper.createRush(team));
 
     room = this._roomService.update(room);
-    this._roomEmitter.emit(client, roomId, 'room:rush:started');
+    this._roomEmitter.emit(client, roomId, 'room:rush:started', room);
   }
 }

@@ -1,23 +1,23 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
 
-import { environment } from '../../../environments/environment';
-import { ObjectLocalStorageItem } from '../models/local-storage-item';
+import {environment} from '../../../environments/environment';
+import {ObjectStorageItem} from '../models';
 
 export interface Theme {
   id: string;
   name: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ThemeService {
   /* FIELDS ================================================================ */
   public readonly themes: Theme[] = Object.entries(environment.assets.themes.values)
-    .map(entry => <Theme>{ id: entry[0], name: entry[1] });
+    .map(entry => <Theme>{id: entry[0], name: entry[1]});
   private readonly _themeFolder = environment.assets.folder + '/' + environment.assets.themes.folder;
 
   private _defaultTheme = this.themes[0];
-  private readonly _currentTheme = new ObjectLocalStorageItem<Theme>('theme');
+  private readonly _currentTheme = new ObjectStorageItem<Theme>('local', 'theme');
 
   /* CONSTRUCTOR =========================================================== */
   constructor(@Inject(DOCUMENT) private  _document: Document) {

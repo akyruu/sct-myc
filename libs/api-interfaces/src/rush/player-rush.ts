@@ -1,14 +1,17 @@
-import {Rucksack} from '../reference/rucksack';
+import {Rucksack} from '..';
 import {Box} from './common/box';
 import {PlayerRucksack} from './player-rucksack';
-import {RushState} from './rush-state';
 
 export interface PlayerRush {
-  /* Properties ------------------------------------------------------------ */
-  rucksackType?: Rucksack;
-  state: RushState; // Synchronized with team state
+  // Identifiers
+  readonly playerId: string;
+  readonly teamId: number;
 
-  /* Rush ------------------------------------------------------------------ */
+  // Preparation
+  rucksackType?: Rucksack;
+  ready: boolean;
+
+  // Running
   rucksack?: PlayerRucksack;
   boxes?: Box[];
 

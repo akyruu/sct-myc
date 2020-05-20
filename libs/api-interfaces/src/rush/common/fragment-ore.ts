@@ -1,4 +1,4 @@
-import {Ore} from '../../reference/ore';
+import {Ore} from '../../settings/ore';
 
 export interface FragmentOre {
   type: Ore;

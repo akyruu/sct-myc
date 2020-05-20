@@ -26,7 +26,7 @@ export class LobbyMenubarComponent {
   }
 
   doCopyRoomUrl() {
-    this._clipboard.copy(window.location.protocol + '//' + window.location.host + '/room?join=' + this.room.id);
+    this._clipboard.copy(window.location.protocol + '//' + window.location.host + '/room/join/' + this.room.id);
   }
 
   doRushStart() {

@@ -22,10 +22,20 @@ export class RoomService {
    * Join an existing room.
    *
    * @param roomId Identifier of room to join.
-   * @param options Room options.
+   * @param playerName Name of player.
    */
-  joinRoom(roomId: string, options: RoomOptions): Promise<Room> {
-    return this._socketService.emitAndWait('room:join', {roomId: roomId, options: options});
+  joinRoom(roomId: string, playerName: string): Promise<Room> {
+    return this._socketService.emitAndWait('room:join', {roomId: roomId, playerName: playerName});
+  }
+
+  /**
+   * Re-join the last room where player connected.
+   *
+   * @param roomId Identifier of room to join.
+   * @param playerId Identifier of player.
+   */
+  async rejoinRoom(roomId: string, playerId: string): Promise<Room> {
+    return this._socketService.emitAndWait('room:rejoin', {roomId: roomId, playerId: playerId});
   }
 
   /**

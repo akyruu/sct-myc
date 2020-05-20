@@ -1,4 +1,4 @@
-import {Rucksack} from '../reference/rucksack';
+import {Rucksack} from '../settings/rucksack';
 import {Item} from './common/item';
 
 export interface PlayerRucksack {
@@ -8,5 +8,5 @@ export interface PlayerRucksack {
   // Calculated
   storage: number; // Percentage
   quantity: number; // Number of items
-  value: string; // Estimated value of content
+  value: number; // Estimated value of content
 }

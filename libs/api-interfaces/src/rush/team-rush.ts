@@ -1,15 +1,17 @@
-import {Vehicle} from '../reference/vehicle';
-import {VehicleCargo} from './common/vehicle-cargo';
-import {PlayerRush} from './player-rush';
-import {RushState} from './rush-state';
+import {RushState, Vehicle, VehicleCargo} from '..';
 
 export interface TeamRush {
-  /* Properties ------------------------------------------------------------ */
-  vehicle?: Vehicle;
-  players: PlayerRush[];
+  // Identifiers
+  readonly teamId: number;
+  readonly playerIds: string[];
+
+  // Rush
   state: RushState;
 
-  /* Rush ------------------------------------------------------------------ */
+  // Preparation
+  vehicle?: Vehicle;
+
+  // Running
   cargo?: VehicleCargo;
 
   // Calculated

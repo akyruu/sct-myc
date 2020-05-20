@@ -9,7 +9,7 @@ export class JoinRoomData {
 
 @Component({
   selector: 'sct-myc-join-room-dialog',
-  templateUrl: './join-room-dialog.html'
+  templateUrl: './join-room.dialog.html'
 })
 export class JoinRoomDialog {
   /* FIELDS ================================================================ */

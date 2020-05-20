@@ -1,17 +1,31 @@
-import { BehaviorSubject, Subscription } from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
-export class LocalStorageItem<T> {
+export type StorageType = 'local' | 'session';
+
+export class StorageItem<T> {
   /* FIELDS ================================================================ */
+  private readonly _storage: Storage;
   private readonly _key: string;
   private readonly _cache = new BehaviorSubject<T>(null);
   private _cached = false;
 
   /* CONSTRUCTOR =========================================================== */
   constructor(
+    type: StorageType,
     key: string,
     private _transform: (value: T) => string,
     private _reverse: (value: string) => T
   ) {
+    switch (type) {
+      case 'local':
+        this._storage = localStorage;
+        break;
+      case 'session':
+        this._storage = sessionStorage;
+        break;
+      default:
+        throw new Error('Unknown storage type: <' + type + '>');
+    }
     this._key = 'sct-myc-' + key;
   }
 
@@ -40,15 +54,16 @@ export class LocalStorageItem<T> {
 }
 
 /* IMPLEMENTATIONS ========================================================= */
-export class StringLocalStorageItem extends LocalStorageItem<string> {
-  constructor(key: string) {
-    super(key, value => value, value => value);
+export class StringStorageItem extends StorageItem<string> {
+  constructor(type: StorageType, key: string) {
+    super(type, key, value => value, value => value);
   }
 }
 
-export class ObjectLocalStorageItem<T extends object> extends LocalStorageItem<T> {
-  constructor(key: string) {
+export class ObjectStorageItem<T extends object> extends StorageItem<T> {
+  constructor(type: StorageType, key: string) {
     super(
+      type,
       key,
       value => value ? JSON.stringify(value) : undefined,
       value => value ? JSON.parse(value) : undefined

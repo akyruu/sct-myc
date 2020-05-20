@@ -49,7 +49,7 @@ export class LobbyComponent implements OnInit {
 
   /* Tools ----------------------------------------------------------------- */
   private _refresh(): void {
-    this.myPlayer = this._appContext.myPlayer;
+    this.myPlayer = this._appContext.player;
     this.queue = {
       players: this.room.players
         .filter(player => this.room.queue.includes(player.id))

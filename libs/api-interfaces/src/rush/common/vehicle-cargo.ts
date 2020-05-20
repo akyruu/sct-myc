@@ -1,4 +1,4 @@
-import {Vehicle} from '../../reference/vehicle';
+import {Vehicle} from '../../settings/vehicle';
 import {Fragment} from './fragment';
 
 export interface VehicleCargo {

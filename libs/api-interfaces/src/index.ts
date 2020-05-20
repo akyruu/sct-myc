@@ -1,7 +1,7 @@
-export * from './reference/harvest';
-export * from './reference/ore';
-export * from './reference/rucksack';
-export * from './reference/vehicle';
+export * from './settings/harvest';
+export * from './settings/ore';
+export * from './settings/rucksack';
+export * from './settings/vehicle';
 
 export * from './room/player';
 export * from './room/room';

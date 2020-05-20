@@ -1,4 +1,4 @@
-import {Ore} from '../../reference/ore';
+import {Ore} from '../../settings/ore';
 import {Item} from './item';
 
 export interface OreItem extends Item<Ore> {

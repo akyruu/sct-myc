@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
 
-import { AppContext, RoomManager } from '../../../core';
-import { JoinRoomData, JoinRoomDialog } from '../components';
+import {AppContext, RoomManager} from '../../../core';
 
 @Injectable()
 export class RoomGuard implements CanActivate {
@@ -16,47 +15,33 @@ export class RoomGuard implements CanActivate {
   ) {}
 
   /* METHODS =============================================================== */
-  canActivate(route: ActivatedRouteSnapshot): Promise<boolean> | boolean {
-    const joinRoomId = route.queryParams.join;
-    if (joinRoomId) {
-      return this._joinRoom(joinRoomId);
-    }
-
+  async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
     const hasRoom = !!this._appContext.room;
     if (!hasRoom) {
-      this._router.navigate(['/welcome']).then();
-      return false;
+      const hasRejoinRoom = await this._rejoinRoom();
+      if (!hasRejoinRoom) {
+        return this._router.parseUrl('/welcome');
+      }
     }
     return true;
   }
 
-  private async _joinRoom(roomId): Promise<boolean> {
-    if (!roomId) {
-      this._router.navigate(['/welcome']).then();
+  private async _rejoinRoom(): Promise<boolean> {
+    // Check parameters
+    const roomId = this._appContext.roomId.value;
+    const playerId = this._appContext.playerId.value;
+    if (!roomId || !playerId) {
       return false;
     }
 
-    const playerName = this._appContext.playerName.value;
-    if (!playerName) {
-      const dialogRef = this._dialog.open(JoinRoomDialog, {
-        data: <JoinRoomData>{ roomId: roomId }
-      });
-
-      const result = await dialogRef.afterClosed().toPromise();
-      if (!result) {
-        this._router.navigate(['/welcome']).then();
-      }
-      return result;
-    }
-
+    // Re-join room
     try {
-      await this._roomManager.joinRoom(roomId, playerName);
+      await this._roomManager.rejoinRoom(roomId, playerId, false);
     } catch (error) {
-      // TODO manage error
-      // if player already exist: dialog
-      // else notification and return to welcome
+      this._appContext.roomId.clear();
+      this._appContext.playerId.clear();
+      return false;
     }
-
-    return false;
+    return true;
   }
 }

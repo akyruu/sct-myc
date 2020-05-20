@@ -5,7 +5,9 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import { AppModule } from './app/app.module';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['debug']
+  });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useWebSocketAdapter(new IoAdapter(app));

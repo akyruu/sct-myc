@@ -1,0 +1,20 @@
+<sct-myc-menubar></sct-myc-menubar>
+<div class="main container">
+  <mat-card>
+    <mat-card-title>{{ 'error.notFound.title' | translate }}</mat-card-title>
+    <mat-card-content>
+      <p>{{ 'error.notFound.description' | translate }}</p>
+      <p>{{ 'error.notFound.action' | translate }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="doBack()">
+        <mat-icon>arrow_back</mat-icon>
+        {{ 'error.notFound.back' | translate }}
+      </button>
+      <button mat-button (click)="doHome()">
+        <mat-icon>home</mat-icon>
+        {{ 'error.notFound.home' | translate }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

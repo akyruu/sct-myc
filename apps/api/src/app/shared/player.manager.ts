@@ -1,14 +1,17 @@
 import {Injectable} from '@angular/core';
 import {Socket} from 'socket.io';
 
-import {RoomEmitter, RoomService} from '../shared';
+import {SettingsService} from '../settings';
+import {RoomEmitter} from './room.emitter';
+import {RoomService} from './room.service';
 
 @Injectable()
 export class PlayerManager {
   /* CONSTRUCTOR =========================================================== */
   constructor(
     private _roomEmitter: RoomEmitter,
-    private _roomService: RoomService
+    private _roomService: RoomService,
+    private _settingsService: SettingsService
   ) {}
 
   /* METHODS =============================================================== */
@@ -37,5 +40,28 @@ export class PlayerManager {
 
     room = this._roomService.update(room);
     this._roomEmitter.emit(client, roomId, 'room:updated', room);
+  }
+
+  /* Rush ------------------------------------------------------------------ */
+  setReady(client: Socket, roomId: string, playerId: string, ready: boolean): void {
+    const room = this._roomService.read(roomId);
+
+    const player = room.players.find(player => player.id === playerId);
+    player.rush.ready = ready;
+
+    this._roomService.update(room);
+    this._roomEmitter.emit(client, roomId, 'rush:player:updated', player.rush);
+  }
+
+  setRucksackType(client: Socket, roomId: string, playerId: string, rucksackId: number): void {
+    const room = this._roomService.read(roomId);
+
+    const player = room.players.find(p => p.id === playerId);
+    player.rush.rucksackType = rucksackId
+      ? this._settingsService.findRucksack(rucksackId)
+      : undefined;
+
+    this._roomService.update(room);
+    this._roomEmitter.emit(client, roomId, 'rush:player:updated', player.rush);
   }
 }

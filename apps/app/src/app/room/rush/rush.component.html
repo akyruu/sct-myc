@@ -1,1 +1,9 @@
-TODO rush
+<mat-sidenav-container class="h-100">
+  <mat-sidenav #sidenav mode="over" role="navigation">
+    <sct-myc-rush-sidenav></sct-myc-rush-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <sct-myc-menubar [title]="title" [sidenav]="sidenav"></sct-myc-menubar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

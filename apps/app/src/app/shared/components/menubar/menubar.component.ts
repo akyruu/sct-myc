@@ -1,9 +1,11 @@
-import { Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Location} from '@angular/common';
+import {Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {MatSidenav} from '@angular/material/sidenav';
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
-import { AppContext } from '../../../core';
-import { Icon } from '../../models';
+import {AppContext} from '../../../core';
+import {Icon} from '../../models';
 
 @Component({
   selector: 'sct-myc-menubar',
@@ -11,9 +13,11 @@ import { Icon } from '../../models';
 })
 export class MenubarComponent implements OnInit, OnDestroy {
   /* FIELDS ================================================================ */
-  @Input() icon: Icon = { svg: 'pickaxe' };
+  @Input() back = false;
+  @Input() icon: Icon = {svg: 'pickaxe'};
   @Input() title: string;
   @Input() sticky = true;
+  @Input() sidenav: MatSidenav;
 
   @ContentChild('icon') iconRef: TemplateRef<any>;
   @ContentChild('title') titleRef: TemplateRef<any>;
@@ -26,6 +30,7 @@ export class MenubarComponent implements OnInit, OnDestroy {
 
   /* CONSTRUCTOR =========================================================== */
   constructor(
+    private _location: Location,
     private _router: Router,
     private _appContext: AppContext
   ) {}
@@ -48,5 +53,10 @@ export class MenubarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  /* Events ---------------------------------------------------------------- */
+  doBack(): void {
+    this._location.back();
   }
 }

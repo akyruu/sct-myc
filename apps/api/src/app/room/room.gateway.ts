@@ -4,11 +4,8 @@ import {Room, RoomOptions} from '@sct-myc/api-interfaces';
 import {Socket} from 'socket.io';
 import {SessionGuard, SessionService} from '../session';
 
-import {RoomService, TransWsException} from '../shared';
-import {PlayerHelper} from './player.helper';
-import {PlayerManager} from './player.manager';
+import {PlayerHelper, PlayerManager, RoomService, TeamManager, TransWsException} from '../shared';
 import {RoomManager} from './room.manager';
-import {TeamManager} from './team.manager';
 
 @WebSocketGateway()
 export class RoomGateway implements OnGatewayDisconnect {
@@ -42,9 +39,9 @@ export class RoomGateway implements OnGatewayDisconnect {
   @SubscribeMessage('room:join')
   onJoinRoom(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { roomId: string, options: RoomOptions }
+    @MessageBody() data: { roomId: string, playerName: string }
   ): Room {
-    const playerName = data.options.playerName;
+    const playerName = data.playerName;
     const roomId = data.roomId;
 
     let room = this._roomService.read(roomId);
@@ -63,6 +60,36 @@ export class RoomGateway implements OnGatewayDisconnect {
     }
 
     const player = this._playerHelper.createPlayer(client, playerName);
+    room = this._roomManager.joinRoom(client, player, data.roomId);
+    this._sessionService.create(client, player, room);
+
+    return room;
+  }
+
+  @SubscribeMessage('room:rejoin')
+  onRejoinRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { roomId: string, playerId: string }
+  ): Room {
+    const playerId = data.playerId;
+    const roomId = data.roomId;
+
+    let room = this._roomService.read(roomId);
+    if (!room) {
+      throw new TransWsException(
+        'Room <' + roomId + '> not found.',
+        'roomNotFound',
+        {roomId: roomId}
+      );
+    } else if (!room.players.find(p => p.id === playerId)) {
+      throw new TransWsException(
+        'Player with id <' + playerId + '> not found in room <' + roomId + '>.',
+        'playerNotFound',
+        {roomId: roomId, playerId: playerId}
+      );
+    }
+
+    const player = this._playerHelper.createPlayer(client, playerId);
     room = this._roomManager.joinRoom(client, player, data.roomId);
     this._sessionService.create(client, player, room);
 

@@ -1,10 +1,12 @@
-import {TeamRush} from '../rush/team-rush';
+import {TeamRush} from '..';
 
 export interface Team {
+  /* Properties ------------------------------------------------------------ */
   id: number;
   leaderId?: string;
   playerIds: string[];
 
+  /* Rush ------------------------------------------------------------------ */
   rush?: TeamRush;
-  rushs?: TeamRush[];
+  history?: TeamRush[];
 }

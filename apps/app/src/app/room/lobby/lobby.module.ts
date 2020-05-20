@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { SharedModule } from '../../shared';
+import {SharedModule} from '../../shared';
 import {LobbyMenubarComponent, LobbyPlayersComponent} from './components';
-import { LobbyComponent } from './lobby.component';
+import {LobbyGuard} from './guards';
+import {LobbyComponent} from './lobby.component';
 
 @NgModule({
-    declarations: [
-        LobbyComponent,
-        LobbyMenubarComponent,
-        LobbyPlayersComponent
-    ],
-  imports: [SharedModule]
+  declarations: [
+    LobbyComponent,
+    LobbyMenubarComponent,
+    LobbyPlayersComponent
+  ],
+  imports: [SharedModule],
+  providers: [LobbyGuard]
 })
 export class LobbyModule {}

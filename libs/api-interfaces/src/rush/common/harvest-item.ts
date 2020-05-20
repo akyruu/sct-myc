@@ -1,4 +1,4 @@
-import {Harvest} from '../../reference/harvest';
+import {Harvest} from '../../settings/harvest';
 import {Item} from './item';
 
 export interface HarvestItem extends Item<Harvest> {

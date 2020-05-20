@@ -1,14 +1,29 @@
 <mat-toolbar color="primary" [class.sticky-top]="sticky">
-  <ng-container *ngIf="!iconRef; else: iconRef">
-    <ng-container *ngIf="icon" [ngSwitch]="!!icon.svg">
-      <mat-icon *ngSwitchCase="true" [svgIcon]="icon.svg"></mat-icon>
-      <mat-icon *ngSwitchDefault>{{ icon }}</mat-icon>
+  <!-- Icon -->
+  <ng-container *ngIf="sidenav">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="!sidenav && back">
+    <button mat-icon-button (click)="doBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="!sidenav && !back">
+    <ng-container *ngIf="!iconRef; else: iconRef">
+      <ng-container *ngIf="icon" [ngSwitch]="!!icon.svg">
+        <mat-icon *ngSwitchCase="true" [svgIcon]="icon.svg"></mat-icon>
+        <mat-icon *ngSwitchDefault>{{ icon }}</mat-icon>
+      </ng-container>
     </ng-container>
   </ng-container>
+  <!-- Title -->
   <ng-container *ngIf="!titleRef; else: titleRef">
     <span>{{ title || ('app.title' | translate) }}</span>
   </ng-container>
   <div class="flex-spacer"></div>
+  <!-- Actions -->
   <sct-myc-theme-picker></sct-myc-theme-picker>
   <ng-container *ngIf="!actionsRef; else: actionsRef"></ng-container>
 </mat-toolbar>

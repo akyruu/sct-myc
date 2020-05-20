@@ -1,0 +1,78 @@
+<mat-toolbar color="primary">
+  <mat-icon>group</mat-icon>
+  <span>{{ 'room.rush.state.prepare' | translate }}</span>
+  <span class="flex-spacer"></span>
+  <button mat-flat-button color="accent" [disabled]="form.invalid || !players.allReady" (click)="doLaunch()">
+    <mat-icon>launch</mat-icon>
+    {{ 'app.action.launch' | translate }}
+  </button>
+</mat-toolbar>
+<div class="container main">
+  <div class="row">
+    <div class="col-md-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar svgIcon="ship"></mat-icon>
+          <mat-card-title>{{ 'room.rush.team.vehicle' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form #form="ngForm">
+            <mat-form-field class="w-100">
+              <mat-select name="vehicle" [required]="true"
+                          [placeholder]="'room.rush.team.vehicle' | translate"
+                          [(ngModel)]="team.rush.vehicle"
+                          [compareWith]="vehicleComparator"
+                          (selectionChange)="doSetVehicle($event.value)">
+                <mat-option *ngFor="let vehicle of vehicles"
+                            [value]="vehicle">{{ 'app.label.vehicle' | translate:vehicle }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar
+                    [matBadge]="players.ready.length.toString()"
+                    [matBadgeColor]="players.allReady ? 'accent' : 'warn'"
+                    matBadgePosition="above before">
+            person
+          </mat-icon>
+          <mat-card-title>{{ 'room.rush.team.crew' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-template #playerList let-title="title" let-players="players">
+            <ng-container *ngIf="players.length > 0">
+              <h3 matSubheader>{{ title | translate }}</h3>
+              <mat-list-item *ngFor="let player of players">
+                <mat-icon matListIcon>person</mat-icon>
+                <div matLine>{{ player.name }}</div>
+                <div matLine class="row">
+                  <span class="col">{{ 'room.rush.player.rucksack' | translate }}</span>
+                  <span class="col" [ngSwitch]="!!player.rush.rucksackType">
+                    <ng-container
+                      *ngSwitchCase="true">{{ 'app.label.rucksack' | translate:player.rush.rucksackType }}</ng-container>
+                    <ng-container *ngSwitchDefault>{{ 'app.common.empty' | translate }}</ng-container>
+                  </span>
+                </div>
+              </mat-list-item>
+            </ng-container>
+          </ng-template>
+
+          <mat-list>
+            <ng-container *ngTemplateOutlet="playerList; context: {
+              title: 'app.common.notReady',
+              players: players.notReady
+              }"></ng-container>
+            <ng-container *ngTemplateOutlet="playerList; context: {
+              title: 'app.common.ready',
+              players: players.ready
+              }"></ng-container>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

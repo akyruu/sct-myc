@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="sidenav">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  TODO rush menu title
+</mat-toolbar>
+<mat-nav-list>
+  <h3 matSubheader>TODO players title</h3>
+  <a mat-list-item *ngFor="let player of room.players"
+     [routerLink]="['/room/rush/player', player.id]">{{ player.name }}</a>
+  <h3 matSubheader>TODO teams title</h3>
+  <a mat-list-item *ngFor="let team of room.teams"
+     [routerLink]="['/room/rush/team', team.id]">Team #{{ team.id }}</a>
+</mat-nav-list>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AppContext, RoomManager } from '../../core';
-import { JoinRoomData, JoinRoomDialog } from './join-room-dialog';
+import { JoinRoomData, JoinRoomDialog } from './join-room.dialog';
 
 @Component({
   selector: 'sct-myc-player-card',
